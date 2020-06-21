@@ -4,9 +4,9 @@
             <img src="../../../static/images/index_bg.png" alt="康贝贝视力">
         </div>
         <div class="ruler">
-            <picker-view :value="value" indicatorStyle="height: 50px;" maskStyle="background: none;" style="width: 100%; height: 100%;">
+            <picker-view :value="value" indicatorStyle="height: 50px;" @change="bindHeight" maskStyle="background: none;" style="width: 100%; height: 100%;">
                 <picker-view-column>
-                    <p v-for="(item, index) in heights" :class="value[0] === index ? 'selected':'noSelected'" :key="index" style="line-height: 50px;background: #F6FCFF;color: #C2C2C2;">
+                    <p v-for="(item, index) in heights" :class="value[0] === index ? 'selected':'noSelected'" :key="index" style="line-height: 50px;background: #F6FCFF;">
                         {{item}}
                     </p>
                 </picker-view-column> 
@@ -21,7 +21,7 @@
                 <p class="num">{{height}}<span>CM</span></p>
             </div>
         </div>
-        <div class="next">
+        <div class="next" @click="goToTest">
             <img src="../../../static/images/next.png" alt="">
         </div>
     </div>
@@ -31,9 +31,23 @@
 export default {
     data() {
         return {
-            value: [2],
+            value: [1],
             height: '120',
             heights: []
+        }
+    },
+    methods:{
+        bindHeight(e) {
+            let a = e.mp.detail.value;
+            this.value = a;
+            this.height = this.heights[a[0]];
+        },
+        goToTest() {
+            let a = this.height;
+            let t = ((a - a / 8) / 2 - 18) <= 45 ? 30 : 60;
+            wx.navigateTo({
+                url: `../test/index?distance=${t}`
+            })
         }
     },
     mounted() {

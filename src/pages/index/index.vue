@@ -22,7 +22,7 @@ export default {
   methods: {
     goToBei() {
       wx.navigateTo({
-        url: "../height/index"
+        url: "/pages/height/main"
       })
     }
   },
