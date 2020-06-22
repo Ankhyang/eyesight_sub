@@ -6,8 +6,8 @@
     <div class="text">
       <p>康贝贝测视力</p>
     </div>    
-    <div class="footer">
-      <img src="../../../static/images/come_beibei.png" @tap="goToBei" alt="进入康贝贝">
+    <div class="footer" @tap="goToBei">
+        <span>进入康贝贝～</span>
     </div>
   </div>
 </template>
@@ -37,6 +37,10 @@ export default {
   width: 100%;
   height: inherit;
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   .header{
     height: 55%;
     display: flex;
@@ -59,12 +63,21 @@ export default {
   }
   .footer{
     height: 12%;
+    width: 86%;
+    height: 7%;
+    border: 2rpx solid #00A0E9;
+    border-radius: 50rpx;
+    position: absolute;
+    bottom: 7%;
+    font-size: 30rpx;
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: flex-end;
-    img{
-      max-width: 100%;
-      max-height: 100%;
+    -moz-box-shadow:0px 2px 5px #9EE0FF; 
+    -webkit-box-shadow:0px 2px 5px #9EE0FF; 
+    box-shadow:0px 2px 5px #9EE0FF;
+    span{ 
+        color: #00A0E9;
     }
   }
 }
