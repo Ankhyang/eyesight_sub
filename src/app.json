@@ -1,11 +1,9 @@
 {
   "pages": [
-    "pages/index/main",
     "pages/result/main",
+    "pages/index/main",
     "pages/height/main",
-    "pages/left_test/main",
-    "pages/left/main",
-    "pages/right_test/main"
+    "pages/left_test/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

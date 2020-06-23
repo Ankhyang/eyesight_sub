@@ -1,48 +1,42 @@
 <template>
   <div class="container">
-      <div class="top">
+    <div class="top">
+      <div class="img">
+        <img src="../../../static/images/portrait.png" alt="">
+      </div>
+      <span>陈小贝</span>
+    </div>
+    <div class="result">
+      <div class="circle">
+        <div class="circle_1"></div>
+        <div class="circle_2"></div>
+        <div class="circle_3">
+          <p class="sight">左眼视力</p>
+          <p class="num">{{leftEye}}</p>
+        </div>
+      </div>
+      <div class="circle">
+        <div class="circle_1"></div>
+        <div class="circle_2"></div>
+        <div class="circle_3">
+          <p class="sight">右眼视力</p>
+          <p class="num">{{rightEye}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="btn_arr">
+        <button class="btn" open-type="share">让朋友测一下～</button>
+        <button class="btn" @click="savePhoto">保存至手机相册～</button>
+    </div>
+    <div class="share">
+      <div class="click">
+        <p class="here">点击这里</p>
         <div class="img">
-          <img src="../../../static/images/portrait.png" alt="">
-        </div>
-        <span>陈小贝</span>
-      </div>
-      <div class="result">
-        <div class="circle">
-          <div class="circle_1"></div>
-          <div class="circle_2"></div>
-          <div class="circle_3">
-            <p class="sight">左眼视力</p>
-            <p class="num">4.5</p>
-            <p class="small">0.3</p>
-          </div>
-        </div>
-        <div class="circle">
-          <div class="circle_1"></div>
-          <div class="circle_2"></div>
-          <div class="circle_3">
-            <p class="sight">右眼视力</p>
-            <p class="num">4.5</p>
-            <p class="small">0.3</p>
-          </div>
+          <img src="../../../static/images/click_here.png" alt="点击这里">
         </div>
       </div>
-      <div class="btn_arr">
-          <div class="btn">
-            <span>让朋友测一下～</span>
-          </div>
-          <div class="btn">
-            <span>保存至手机相册～</span>
-          </div>
-      </div>
-      <div class="share">
-        <div class="click">
-          <p class="here">点击这里</p>
-          <div class="img">
-            <img src="../../../static/images/click_here.png" alt="点击这里">
-          </div>
-        </div>
-        <p class="focus">关注公众号“了解护眼方法大全”</p>
-      </div>
+      <p class="focus">关注公众号“了解护眼方法大全”</p>
+    </div>
   </div>
 </template>
 
@@ -50,8 +44,29 @@
 export default {
     data() {
         return {
-          
+            leftEye: '3.3',
+            rightEye: '3.3',
+            time: '2020-06-23',
+            eRow: '22',
+            savedImgUrl: ''
         }
+    },
+    onLoad(q) {
+      this.leftEye = q.leftEye;
+      this.rightEye = q.rightEye;
+      this.time = q.time;
+      this.eRow = q.eRow;
+    },
+    methods: {
+      savePhoto() {
+        
+      }
+    },
+    onShareAppMessage(t) {
+      return "button" === t.from && {
+        title: "康贝贝测视力",
+        path: "/pages/index/main"
+      };
     }
 }
 </script>
@@ -147,10 +162,6 @@ export default {
             font-size: 72rpx;
             color: #00A0E9;
           }
-          .small{
-            font-size: 24rpx;
-            color: #5C5C5C;
-          }
         }
       }
     }
@@ -158,23 +169,29 @@ export default {
       width: 100%;
       height: 15%;
       display: flex;
+      flex-direction: row;
       justify-content: space-around;
       align-items: center;
       .btn{
-        width: 37%;
+        width: 40%;
         height: 45%;
         border: 2rpx solid #00A0E9;
         border-radius: 50rpx;
         font-size: 30rpx;
+        color: #00A0E9;
+        background: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         -moz-box-shadow: 4rpx 5rpx 12rpx #9EDFFF;
         -webkit-box-shadow: 4rpx 5rpx 12rpx #9EDFFF;
         box-shadow: 4rpx 5rpx 12rpx #9EDFFF;
-        span{ 
-            color: #00A0E9;
+        &:after{
+          border-color:transparent;
         }
+      }
+      .btn_save{
+        margin-right: 6%;
       }
     }
     .share{

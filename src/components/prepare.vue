@@ -7,7 +7,7 @@
             <p class="hide">{{to === 'left_test' ? '遮右眼':'遮左眼'}}</p>
             <p class="direction">根据E标开口方向，选择点击对应的方向按钮</p>
         </div>
-        <div class="btn" @click="goToTest">
+        <div class="btn" @click="backToParent">
             <span>已准备好，开始测量</span>
         </div>
     </div>
@@ -19,28 +19,11 @@ export default {
         to: {
             type: String,
             default: 'left_test'
-        },
-        distance: {
-            type: Number,
-            default: 30
-        }
-    },
-    data() {
-        return {
-            tips: ''
         }
     },
     methods: {
-        goToTest() {
-            if(this.to === 'left_test') {
-                wx.navigateTo({
-                    url: `/pages/left_test/main?type=${this.to}&distance=${this.distance}`
-                })
-            } else {
-                wx.navigateTo({
-                    url: `/pages/right_test/main?type=${this.to}&distance=${this.distance}`
-                })
-            }
+        backToParent() {
+            this.$emit('toggleShow', {from : this.to})
         }
     }
 }

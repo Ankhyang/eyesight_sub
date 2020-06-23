@@ -51,7 +51,7 @@ export default {
             let a = this.height;
             let t = ((a - a / 8) / 2 - 18) <= 45 ? 30 : 60;
             wx.navigateTo({
-                url: `../left/main?distance=${t}`
+                url: `../left_test/main?to='left_test'distance=${t}`
             })
         }
     },
