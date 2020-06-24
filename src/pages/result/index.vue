@@ -29,15 +29,17 @@
         <button class="btn" @click="saveImage">保存至手机相册～</button>
     </div>
     <div class="share">
-      <!-- <div class="click">
-        <p class="here">点击这里</p>
-        <div class="img">
-          <img src="../../../static/images/click_here.png" alt="点击这里">
-        </div>
+      <div class="click">
+        <button class="click_here" open-type="contact">
+          <span>点击这里</span>
+          <img class="btnImg" src="../../../static/images/click_here.png" alt="点击这里">
+        </button>
       </div>
-      <p class="focus">关注公众号“了解护眼方法大全”</p>  -->
-      <official-account></official-account>
+      <p class="focus">关注公众号“了解护眼方法大全”</p> 
     </div>
+    <!-- <div class="canvas_pic">
+      <canvas canvas-id="poster" id="poster" style="width:296rpx;height:414rpx;"></canvas>
+    </div> -->
   </div>
 </template>
 
@@ -346,7 +348,7 @@ export default {
   .container{
     width: 100%;
     height: 100%;
-    // background: #F6FCFF;
+    background: #F6FCFF;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -478,39 +480,66 @@ export default {
       height: 30%;
       padding-top: 5%;
       box-sizing: border-box;
-      // .click{
-      //   width: 100%;
-      //   height: 15%;
-      //   display: flex;
-      //   flex-direction: row;
-      //   justify-content: center;
-      //   align-items: center;
-      //   .here{
-      //     font-size: 28rpx;
-      //     color: #00A0E9;
-      //     font-weight: bold;
-      //     text-decoration: underline;
-      //     letter-spacing: 4rpx;
-      //   }
-      //   .img{
-      //     width: 5%;
-      //     height: 91%;
-      //     padding-left: 4%;
-      //     img{
-      //       max-width: 100%;
-      //       max-height: 100%;
-      //     }
-      //   }
-      // }
-      // .focus{
-      //   width: 100%;
-      //   height: 10%;
-      //   text-align: center;
-      //   padding: 10rpx;
-      //   font-size: 24rpx;
-      //   color: #C2C2C2;
-      //   letter-spacing: 4rpx;
-      // }
+      .click{
+        width: 100%;
+        height: 15%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        .here{
+          font-size: 28rpx;
+          color: #00A0E9;
+          font-weight: bold;
+          text-decoration: underline;
+          letter-spacing: 4rpx;
+        }
+        .click_here {
+          width: 80%;
+          margin-top: 20rpx;
+          background-color: #F6FCFF;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          &:after{
+            border: 0; 
+          }
+          .btnImg {
+            margin-left: 30rpx;
+            width: 40rpx;
+            height: 28rpx;
+          }
+          span{
+            font-size: 26rpx;
+            color: #00A0E9;
+            font-weight: bold;
+            text-decoration: underline;
+          }
+        }
+        .img{
+          width: 5%;
+          height: 58%;
+          padding-left: 4%;
+          img{
+            max-width: 100%;
+            max-height: 100%;
+          }
+        }
+      }
+      .focus{
+        width: 100%;
+        height: 10%;
+        text-align: center;
+        padding: 20rpx;
+        font-size: 24rpx;
+        color: #C2C2C2;
+        letter-spacing: 4rpx;
+      }
+    }
+    .canvas_pic{
+      position: absolute;
+      z-index: 11;
     }
   }
 </style>

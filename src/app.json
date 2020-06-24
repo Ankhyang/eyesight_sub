@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/result/main",
     "pages/demo/main",
     "pages/index/main",
-    "pages/result/main",
     "pages/height/main",
     "pages/left_test/main"
   ],
