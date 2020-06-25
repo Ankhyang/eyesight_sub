@@ -1,9 +1,8 @@
 {
   "pages": [
-    "pages/result/main",
-    "pages/demo/main",
     "pages/index/main",
     "pages/height/main",
+    "pages/result/main",
     "pages/left_test/main"
   ],
   "window": {

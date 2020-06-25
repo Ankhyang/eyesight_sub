@@ -20,11 +20,12 @@ export default {
     setTimeout(() => {
         wx.setStorageSync("baidu_token", e), this.sysBaiduOpenApiToken();
     }, 5);
+    
     // wx.getStorageSync("userId") || "" || wx.login({
     //   success: function(e) { 
     //     console.log('wx.login', e)
     //     wx.request({
-    //       url: config.staticUrl + "SmallProgram/WechatSight/getUserInfo",
+    //       url: config.staticUrl + `/api/v1/users/get/${token}`,
     //       data: {
     //           code: e.code
     //       },

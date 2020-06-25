@@ -55,6 +55,7 @@
 import prepare from '@/components/prepare'
 import util from '@/utils/utils.js'
 import config from '@/config/config.js'
+import { mapState } from 'vuex'
 
 export default {
     components: { prepare },
@@ -103,6 +104,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['userInfo']),
         // 视图区的E方向
         e_direction: function() {
             // 根据direction返回对应的class
@@ -218,15 +220,18 @@ export default {
         uploadVision(e) {
             var a = wx.getStorageSync("userId"), i = Date.parse(new Date()) / 1e3;
             // wx.request({
-            //     url: config.staticUrl + "SmallProgram/WechatSight/addUserVision",
+            //     url: config.staticUrl + "/api/v1/save/logv",
+            //     method: 'POST',
             //     data: {
+            //         createDate: util.formatTime(new Date()),
+            //         height: this.distance,
+            //         visionLeft: this.leftEye,
+            //         visionReight: this.rightEye,
             //         userId: a,
-            //         leftEye: this.leftEye,
-            //         rightEye: this.rightEye,
-            //         testDate: i
+            //         userName: this.userInfo.nickName
             //     },
             //     success: function(t) {
-            //         console.log(t);
+                    
             //     }
             // });
         },

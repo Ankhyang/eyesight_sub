@@ -5,7 +5,7 @@ Component({
       type: Object,
       value: {view: []},
       observer (newVal, oldVal) {
-        console.log(newVal, oldVal);
+        // console.log(newVal, oldVal);
         if (!this.data.isPainting) {
           if (JSON.stringify(newVal) !== JSON.stringify(oldVal) &&
             newVal && newVal.width && newVal.height) {
@@ -263,7 +263,6 @@ Component({
         height,
         canvasId: 'canvasdrawer',
         success: res => {
-          console.log('res', res)
           if (res.errMsg === 'canvasToTempFilePath:ok') {
             this.setData({
               showCanvas: false,

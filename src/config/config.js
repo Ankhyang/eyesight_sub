@@ -1,5 +1,5 @@
 let staticUrl = '';
 
 export default {
-    staticUrl: 'https://seex.dev.iouou.cn/'
+    staticUrl: 'http://host1.cqgfwlkj.com:8084'
 }

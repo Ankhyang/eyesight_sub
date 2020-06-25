@@ -2,9 +2,9 @@
   <div class="container">
     <div class="top">
       <div class="img">
-        <img src="../../../static/images/portrait.png" alt="">
+        <img :src="userInfo.avatarUrl" alt="">
       </div>
-      <span>陈小贝</span>
+      <span>{{userInfo.nickName}}</span>
     </div>
     <div class="result">
       <div class="circle">
@@ -24,9 +24,15 @@
         </div>
       </div>
     </div>
+    <div class="canvas">
+      <!-- <div style="display: flex;flex-direction: row;width: 100%;height: 100%;justify-content: center;position: absolute;">
+        <img :src="shareImage" class="share-image"/>
+      </div> -->
+      <canvasdrawer :painting="painting" @getImage="eventGetImage"/>
+    </div>
     <div class="btn_arr">
         <button class="btn" open-type="share">让朋友测一下～</button>
-        <button class="btn" @click="saveImage">保存至手机相册～</button>
+        <button class="btn" @click="eventDraw">保存至手机相册～</button>
     </div>
     <div class="share">
       <div class="click">
@@ -37,13 +43,11 @@
       </div>
       <p class="focus">关注公众号“了解护眼方法大全”</p> 
     </div>
-    <!-- <div class="canvas_pic">
-      <canvas canvas-id="poster" id="poster" style="width:296rpx;height:414rpx;"></canvas>
-    </div> -->
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     data() {
         return {
@@ -55,7 +59,8 @@ export default {
             painting: {}
         }
     },
-    created() {
+    computed: {
+      ...mapState(['userInfo'])
     },
     onLoad(q) {
       this.leftEye = q.leftEye;
@@ -65,274 +70,195 @@ export default {
     },
     methods: {
       eventGetImage (event) {
-        console.log(event)
-        wx.hideLoading()
-        this.shareImage = event.target.tempFilePath
+        wx.hideLoading();
+        this.shareImage = event.target.tempFilePath;
+        console.log(this.shareImage);
+        // 获取用户授权信息
+        wx.getSetting({
+          success(res) {
+            // true则已经授权
+            if (res.authSetting['scope.writePhotosAlbum']) {
+              this.save_photo();
+            } else if (res.authSetting['scope.writePhotosAlbum'] === undefined) { // 第一次授权
+              wx.authorize({
+                scope: 'scope.writePhotosAlbum',
+                success() {
+                  this.save_photo();
+                },
+                fail(){
+                  wx.showToast({
+                    title: '您没有授权，无法保存到相册',
+                    icon: 'none'
+                  })
+                }
+              })
+            } else {
+              wx.openSetting({
+                success(res) {
+                  if (res.authSetting['scope.writePhotosAlbum']) {
+                    this.save_photo();
+                  }else{
+                    wx.showToast({
+                        title:'您没有授权，无法保存到相册',
+                        icon:'none'
+                    })
+                  }
+                }
+              })
+            }
+          }
+        });
       },
       eventDraw () {
-        wx.showLoading({
-          title: '绘制分享图片中',
-          mask: true
-        })
-        this.painting = {
-          width: 375,
-          height: 555,
-          clear: true,
-          views: [
-            {
-              type: 'image',
-              url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531103986231.jpeg',
-              top: 0,
-              left: 0,
-              width: 375,
-              height: 555
-            },
-            {
-              type: 'image',
-              url: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epJEPdPqQVgv6D8bojGT4DrGXuEC4Oe0GXs5sMsN4GGpCegTUsBgL9SPJkN9UqC1s0iakjQpwd4h4A/132',
-              top: 27.5,
-              left: 29,
-              width: 55,
-              height: 55
-            },
-            {
-              type: 'image',
-              url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531401349117.jpeg',
-              top: 27.5,
-              left: 29,
-              width: 55,
-              height: 55
-            },
-            {
-              type: 'text',
-              content: '您的好友【kuckboy】',
-              fontSize: 16,
-              color: '#402D16',
-              textAlign: 'left',
-              top: 33,
-              left: 96,
-              bolder: true
-            },
-            {
-              type: 'text',
-              content: '发现一件好货，邀请你一起0元免费拿！',
-              fontSize: 15,
-              color: '#563D20',
-              textAlign: 'left',
-              top: 59.5,
-              left: 96
-            },
-            {
-              type: 'image',
-              url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385366950.jpeg',
-              top: 136,
-              left: 42.5,
-              width: 290,
-              height: 186
-            },
-            {
-              type: 'image',
-              url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385433625.jpeg',
-              top: 443,
-              left: 85,
-              width: 68,
-              height: 68
-            },
-            {
-              type: 'text',
-              content: '正品MAC魅可口红礼盒生日唇膏小辣椒Chili西柚情人',
-              fontSize: 16,
-              lineHeight: 21,
-              color: '#383549',
-              textAlign: 'left',
-              top: 336,
-              left: 44,
-              width: 287,
-              MaxLineNumber: 2,
-              breakWord: true,
-              bolder: true
-            },
-            {
-              type: 'text',
-              content: '￥0.00',
-              fontSize: 19,
-              color: '#E62004',
-              textAlign: 'left',
-              top: 387,
-              left: 44.5,
-              bolder: true
-            },
-            {
-              type: 'text',
-              content: '原价:￥138.00',
-              fontSize: 13,
-              color: '#7E7E8B',
-              textAlign: 'left',
-              top: 391,
-              left: 110,
-              textDecoration: 'line-through'
-            },
-            {
-              type: 'text',
-              content: '长按识别图中二维码帮我砍个价呗~',
-              fontSize: 14,
-              color: '#383549',
-              textAlign: 'left',
-              top: 460,
-              left: 165.5,
-              lineHeight: 20,
-              MaxLineNumber: 2,
-              breakWord: true,
-              width: 125
-            }
-          ]
-        }
-      },
-      eventSave () {
-        wx.saveImageToPhotosAlbum({
-          filePath: this.shareImage,
-          success (res) {
-            wx.showToast({
-              title: '保存图片成功',
-              icon: 'success',
-              duration: 2000
-            })
-          }
-        })
-      },
-      eventGetImage(event) {
-        wx.hideLoading()
-        this.shareImage = event.target.tempFilePath
-      },
-      saveImage() {
         wx.showLoading({
           title: '图片生成中...',
           mask: true
         })
-        console.log(this.shareImage)
+        // let user = wx.getStorageSync('userInfo');
+        let user = this.userInfo;
+        console.log('user', user)
         this.painting = {
           width: 375,
           height: 555,
           clear: true,
           views: [
             {
-              type: 'image',
-              url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531103986231.jpeg',
+              type: 'rect',
+              background: '#F6FCFF',
               top: 0,
               left: 0,
               width: 375,
               height: 555
             },
             {
+              type: 'text',
+              content: '视力测量结果',
+              fontSize: 20,
+              color: '#00A0E9',
+              textAlign: 'left',
+              top: 20,
+              left: 20
+            },
+            {
               type: 'image',
-              url: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epJEPdPqQVgv6D8bojGT4DrGXuEC4Oe0GXs5sMsN4GGpCegTUsBgL9SPJkN9UqC1s0iakjQpwd4h4A/132',
-              top: 27.5,
-              left: 29,
+              url: user.avatarUrl,
+              top: 70,
+              left: 35,
               width: 55,
               height: 55
             },
-            {
-              type: 'image',
-              url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531401349117.jpeg',
-              top: 27.5,
-              left: 29,
-              width: 55,
-              height: 55
-            },
+            // {
+            //   type: 'image',
+            //   url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531401349117.jpeg',
+            //   top: 27.5,
+            //   left: 29,
+            //   width: 55,
+            //   height: 55
+            // },
             {
               type: 'text',
-              content: '您的好友【kuckboy】',
-              fontSize: 16,
-              color: '#402D16',
+              content: user.nickName,
+              fontSize: 18,
+              color: '#00A0E9',
               textAlign: 'left',
-              top: 33,
-              left: 96,
+              top: 90,
+              left: 260,
               bolder: true
             },
             {
-              type: 'text',
-              content: '发现一件好货，邀请你一起0元免费拿！',
-              fontSize: 15,
-              color: '#563D20',
-              textAlign: 'left',
-              top: 59.5,
-              left: 96
+              type: 'image',
+              url: '/static/images/sight_view.png',
+              top: 150,
+              left: 9,
+              width: 360,
+              height: 200
             },
             {
               type: 'image',
-              url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385366950.jpeg',
-              top: 136,
-              left: 42.5,
-              width: 290,
-              height: 186
+              url: '/static/images/circle.png',
+              top: 180,
+              left: 33,
+              width: 140,
+              height: 140
+            },
+            {
+              type: 'text',
+              content: '左眼视力',
+              fontSize: 12,
+              color: '#9E9E9E',
+              textAlign: 'left',
+              top: 220,
+              left: 80,
+            },
+            {
+              type: 'text',
+              content: this.leftEye,
+              fontSize: 35,
+              color: '#00A0E9',
+              textAlign: 'left',
+              top: 240,
+              left: 80,
             },
             {
               type: 'image',
-              url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385433625.jpeg',
-              top: 443,
-              left: 85,
-              width: 68,
-              height: 68
+              url: '/static/images/circle.png',
+              top: 180,
+              left: 203,
+              width: 140,
+              height: 140
             },
             {
               type: 'text',
-              content: '正品MAC魅可口红礼盒生日唇膏小辣椒Chili西柚情人',
-              fontSize: 16,
-              lineHeight: 21,
-              color: '#383549',
+              content: '右眼视力',
+              fontSize: 12,
+              color: '#9E9E9E',
               textAlign: 'left',
-              top: 336,
-              left: 44,
-              width: 287,
-              MaxLineNumber: 2,
-              breakWord: true,
-              bolder: true
+              top: 220,
+              left: 250,
             },
             {
               type: 'text',
-              content: '￥0.00',
-              fontSize: 19,
-              color: '#E62004',
+              content: this.rightEye,
+              fontSize: 35,
+              color: '#00A0E9',
               textAlign: 'left',
-              top: 387,
-              left: 44.5,
-              bolder: true
+              top: 240,
+              left: 247,
+            },
+            {
+              type: 'image',
+              url: '/static/images/qr_code.png',
+              top: 380,
+              left: 130,
+              width: 120,
+              height: 120
             },
             {
               type: 'text',
-              content: '原价:￥138.00',
+              content: '关注公众号，了解护眼方法大全',
               fontSize: 13,
-              color: '#7E7E8B',
+              color: '#9E9E9E',
               textAlign: 'left',
-              top: 391,
-              left: 110,
-              textDecoration: 'line-through'
-            },
-            {
-              type: 'text',
-              content: '长按识别图中二维码帮我砍个价呗~',
-              fontSize: 14,
-              color: '#383549',
-              textAlign: 'left',
-              top: 460,
-              left: 165.5,
-              lineHeight: 20,
-              MaxLineNumber: 2,
-              breakWord: true,
-              width: 125
+              top: 520,
+              left: 95,
+              bolder: true
             }
           ]
         }
-        // wx.saveImageToPhotosAlbum({
-        //   filePath: this.shareImage,
-        //   success (res) {
-        //     wx.showToast({
-        //       title: '保存图片成功',
-        //       icon: 'success',
-        //       duration: 2000
-        //     })
-        //   }
-        // })
+      },
+      save_photo() {
+        if(this.shareImage) {
+          wx.saveImageToPhotosAlbum({
+            filePath: this.shareImage,
+            success (res) {
+              wx.showToast({
+                title: '保存图片成功',
+                icon: 'success',
+                duration: 2000
+              })
+            }
+          });
+        }
       }
     },
     onShareAppMessage(t) {
@@ -368,6 +294,7 @@ export default {
         img{
           max-width: 100%;
           max-height: 100%;
+          border-radius: 50%;
         }
       }
       span{
@@ -438,6 +365,13 @@ export default {
         }
       }
     }
+    // .canvas{
+    //   position: absolute;
+    //   z-index: 11;
+    //   width: 80%;
+    //   height: 60%;
+    //   border: 2rpx solid red;
+    // }
     .btn_arr{
       width: 100%;
       height: 15%;
@@ -467,14 +401,14 @@ export default {
         margin-right: 6%;
       }
     }
-    .share-image {
-      width: 300rpx;
-      height: 408rpx;
-      margin: 0 75rpx;
-      border: 2rpx solid black;
-      position: absolute;
-      z-index: 222;
-    }
+    // .share-image {
+    //   width: 900rpx;
+    //   height: 800rpx;
+    //   margin: 0 75rpx;
+    //   border: 2rpx solid black;
+    //   position: absolute;
+    //   z-index: 222;
+    // }
     .share{
       width: 92%;
       height: 30%;
@@ -536,10 +470,6 @@ export default {
         color: #C2C2C2;
         letter-spacing: 4rpx;
       }
-    }
-    .canvas_pic{
-      position: absolute;
-      z-index: 11;
     }
   }
 </style>
