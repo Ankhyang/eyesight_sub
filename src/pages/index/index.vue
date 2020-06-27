@@ -133,6 +133,7 @@ export default {
     height: 12%;
     width: 86%;
     height: 7%;
+    overflow: hidden;
     border: 2rpx solid #00A0E9;
     border-radius: 50rpx;
     position: absolute;
@@ -145,10 +146,8 @@ export default {
     -webkit-box-shadow:0px 2px 5px #9EE0FF; 
     box-shadow:0px 2px 5px #9EE0FF;
     .btn{
-      width: 90%;
-      height: 80%;
-      line-height: 200%;
       background: #fff;
+      width: 100%;
       color: #00A0E9;
       vertical-align: middle;
       &:after{
