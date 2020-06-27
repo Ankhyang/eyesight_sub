@@ -20,25 +20,25 @@
             </div>
             <div class="direction">
                 <div class="common top">
-                    <div class="img" id="up">
-                        <img src="../../static/images/top.png" alt="上" @tap="choseDirection">
+                    <div class="img" id="up" @tap="choseDirection">
+                        <img src="../../static/images/top.png" alt="上">
                     </div>
                 </div>
                 <div class="common center">
-                    <div class="center_img left_img" id="left">
-                        <img src="../../static/images/left.png" alt="左" @tap="choseDirection">
+                    <div class="center_img left_img" id="left" @tap="choseDirection">
+                        <img src="../../static/images/left.png" alt="左">
                     </div>
                     <div class="no_see" @tap="canotSee">
                         <p>太小了</p>
                         <p>我看不清～</p>
                     </div>
-                    <div class="center_img right_img" id="right">
-                        <img src="../../static/images/right.png" alt="右" @tap="choseDirection">
+                    <div class="center_img right_img" id="right" @tap="choseDirection">
+                        <img src="../../static/images/right.png" alt="右">
                     </div>
                 </div>
                 <div class="common bottom">
-                    <div id="down">
-                        <img src="../../static/images/bottom.png" alt="下" @tap="choseDirection">
+                    <div class="img" id="down" @tap="choseDirection">
+                        <img src="../../static/images/bottom.png" alt="下">
                     </div>
                 </div>
             </div>
@@ -291,7 +291,7 @@ export default {
             title: this.barTitle
         });
     },
-    mounted() {
+    onLoad() {
         var a, i = this, r = i.eRow, s = "", o = i.directionData, n = util.getSmallEyeData(), 
         h = util.getBigEyeData(), u = util.getE60SizeData(), l = util.getE30SizeData(), 
         c = util.getRowNumberData(), d = wx.getStorageSync("results"),
