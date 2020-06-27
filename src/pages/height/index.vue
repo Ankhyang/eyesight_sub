@@ -13,7 +13,7 @@
                     </picker-view-column> 
                 </picker-view>
             </div>
-            <div class="img">
+            <div class="img" :class="isIphoneX ? 'img_x':''">
                 <img src="../../../static/images/ruler.png" alt="尺子">
             </div>
         </div>
@@ -38,20 +38,21 @@ export default {
         return {
             value: [40],
             height: '120',
-            heights: []
+            heights: [],
+            isIphoneX: false
         }
     },
     methods:{
         bindHeight(e) {
-            let a = e.mp.detail.value;
+            var a = e.mp.detail.value;
             this.value = a;
             this.height = this.heights[a[0]];
         },
         goToTest() {
-            let a = this.height;
-            let t = ((a - a / 8) / 2 - 18) <= 45 ? 30 : 60;
+            var a = this.height, t;
+            t = (t = (a - a / 8) / 2 - 18) <= 45 ? 30 : 60;
             wx.navigateTo({
-                url: `../left_test/main?to='left_test'distance=${t}`
+                url: `../left_test/main?distance=${t}&height=${a}`
             })
         }
     },
@@ -62,6 +63,7 @@ export default {
         setTimeout(() => {
             this.value = [40];
         } , 0)
+        this.isIphoneX = wx.getStorageSync('isIphoneX');
     }
 }
 </script>
@@ -116,10 +118,10 @@ export default {
             z-index: 1;
             &:before{
                 position: absolute;
-                top: 40%;
+                top: 39.5%;
                 content: '';
                 width: 44rpx;
-                height: 7rpx;
+                height: 9rpx;
                 background: #00A0E9;
                 border-top-right-radius: 6rpx;
                 border-bottom-right-radius: 6rpx;
@@ -129,10 +131,15 @@ export default {
                 max-height: 100%;
             }
         }
+        .img_x{
+            &:before{
+                top: 40%;
+            }
+        }
     }
     .height{
-        width: 41%;
-        height: 15%;
+        width: 300rpx;
+        height: 200rpx;
         padding: 20rpx;
         position: absolute;
         top: 10%;
@@ -143,7 +150,7 @@ export default {
             padding-bottom: 20rpx;
         }
         .height_num{
-            height: 83%;
+            height: 150rpx;
             .img{
                 width: 80%;
                 height: 75%;
@@ -154,8 +161,8 @@ export default {
             }
             .num{
                 position: absolute;
-                top: 66%;
-                left: 25%;
+                top: 142rpx;
+                left: 90rpx;
                 font-size: 37rpx;
                 color: #00A0E9;
                 span{

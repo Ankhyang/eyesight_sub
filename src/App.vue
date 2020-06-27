@@ -37,6 +37,13 @@ export default {
     //     });
     //   }
     // });
+    // 获取机型
+    wx.getSystemInfo({
+      success(res) {
+        let f = res.model === "iPhone X" ? true : false;
+        wx.setStorageSync("isIphoneX", f)
+      }
+    })
   },
   methods: {
     sysBaiduOpenApiToken() {

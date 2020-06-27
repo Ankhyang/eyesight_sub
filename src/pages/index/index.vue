@@ -7,7 +7,10 @@
       <p>康贝贝测视力</p>
     </div>    
     <div class="footer">
-      <button class="btn" open-type="getUserInfo" @getuserinfo="getPerson">
+      <button class="btn" v-show="flag" open-type="getUserInfo" @getuserinfo="getPerson">
+        授权
+      </button>
+      <button class="btn" v-show="!flag" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
         进入康贝贝～
       </button>
     </div>
@@ -15,55 +18,84 @@
 </template>
 
 <script>
-import config from '@/config/config.js'
 import { mapMutations } from 'vuex'
 export default {
-  data () {
+  data(){
     return {
-      
+      openId: '',
+      phone: '',
+      code: '',
+      session_key: '',
+      flag: true // 授权用户信息
     }
   },
   methods: {
-    ...mapMutations(['setUserInfo']),
+    ...mapMutations(['setUserInfo', 'setConfig']),
     getPerson(event) {
       const userInfo = event.mp.detail.userInfo;
-      console.log(userInfo);
       if(userInfo) {
         this.setUserInfo(userInfo);
-        // this.login();
+        // false为授权电话号码
+        this.flag = false;
         wx.navigateTo({
           url: "/pages/height/main"
         })
+        wx.login({
+          success: res => { 
+            if (res.code) {
+              this.code = res.code;
+              let r = this.$service.getOpenId({code: res.code})
+              r.then(v => {
+                // 获取到openid和session_key
+                this.setConfig(v.data)
+                this.openId = v.data.openid;
+                this.session_key = v.data.session_key;
+              }).catch(e => {
+                
+              })
+            } else {
+              console.log('登录失败！' + res.errMsg)
+            }
+          },
+          fail(error){
+            console.log('error',error);
+          }
+        })
       }
     },
-    login() {
-      wx.login({
-        success (res) {
-          console.log('res',res)
-          if (res.code) {
-            //发起网络请求
-            // wx.request({
-            //   url: config.staticUrl + '/api/v1/wx/login',
-            //   data: {
-            //     code: res.code
-            //   },
-            //   success: function(e) {
-            //     // 得到sessionID
-            //     console.log(e);
-            //   }
-            // })
-          } else {
-            console.log('登录失败！' + res.errMsg)
-          }
-        },
-        fail(error){
-          console.log('error',error);
-        }
+    //  获取手机号码
+    getPhoneNumber(e) {
+      console.log(e)
+      // 获取手机号码
+      const data = {
+        code: this.code,
+        iv: e.target.iv,
+        session_key: this.session_key,
+        encryptedData: e.target.encryptedData
+      }
+      let s = this.$service.getPhoneNum('/api/v1/wx/getPhone', data, 'GET');
+      console.log('s', s)
+      s.then(res => {
+        console.log('res', res)
+      }).catch(error => {
+        
       })
+    },
+    save_user_info() {
+      // 保存用户信息
+      const d = {
+        city: userInfo.city,
+        country: userInfo.country,
+        gendel: userInfo.gender,
+        // mobilePhone: userInfo.,
+        openId: this.openId,
+        province: userInfo.province,
+        // unionId: ,
+        userName: userInfo.nickName,
+        // userToken: ''
+      }
+      let s = this.$service.save_userInfo(d)
     }
-  },
-  created () {
-    
   }
 }
 </script>
@@ -83,8 +115,8 @@ export default {
     justify-content: center;
     align-items: center;
     img{
-      width: 270rpx;
-      height: 270rpx;
+      width: 200rpx;
+      height: 200rpx;
     }
   }
   .text{

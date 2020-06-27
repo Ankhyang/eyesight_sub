@@ -1,6 +1,6 @@
 <template>
     <div>
-        <eyesight :to="left_test" :distance="distance"/>
+        <eyesight :to="left_test" :distance="distance" :height="height"/>
     </div>
 </template>
 
@@ -11,6 +11,9 @@ export default {
         distance: {
             type: Number,
             default: 30
+        },
+        height: {
+            type: Number
         }
     },
     components: {eyesight}

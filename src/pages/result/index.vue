@@ -1,9 +1,7 @@
 <template>
   <div class="container">
     <div class="top">
-      <div class="img">
-        <img :src="userInfo.avatarUrl" alt="">
-      </div>
+      <img :src="userInfo.avatarUrl" alt="">
       <span>{{userInfo.nickName}}</span>
     </div>
     <div class="result">
@@ -25,9 +23,6 @@
       </div>
     </div>
     <div class="canvas">
-      <!-- <div style="display: flex;flex-direction: row;width: 100%;height: 100%;justify-content: center;position: absolute;">
-        <img :src="shareImage" class="share-image"/>
-      </div> -->
       <canvasdrawer :painting="painting" @getImage="eventGetImage"/>
     </div>
     <div class="btn_arr">
@@ -51,9 +46,9 @@ import { mapState } from 'vuex'
 export default {
     data() {
         return {
-            leftEye: '3.3',
-            rightEye: '3.3',
-            time: '2020-06-23',
+            leftEye: '',
+            rightEye: '',
+            time: '',
             eRow: '22',
             shareImage: '',
             painting: {}
@@ -72,178 +67,147 @@ export default {
       eventGetImage (event) {
         wx.hideLoading();
         this.shareImage = event.target.tempFilePath;
-        console.log(this.shareImage);
-        // 获取用户授权信息
-        wx.getSetting({
-          success(res) {
-            // true则已经授权
-            if (res.authSetting['scope.writePhotosAlbum']) {
-              this.save_photo();
-            } else if (res.authSetting['scope.writePhotosAlbum'] === undefined) { // 第一次授权
-              wx.authorize({
-                scope: 'scope.writePhotosAlbum',
-                success() {
-                  this.save_photo();
-                },
-                fail(){
-                  wx.showToast({
-                    title: '您没有授权，无法保存到相册',
-                    icon: 'none'
-                  })
-                }
-              })
-            } else {
-              wx.openSetting({
-                success(res) {
-                  if (res.authSetting['scope.writePhotosAlbum']) {
-                    this.save_photo();
-                  }else{
-                    wx.showToast({
-                        title:'您没有授权，无法保存到相册',
-                        icon:'none'
-                    })
-                  }
-                }
-              })
-            }
-          }
-        });
+        this.save_photo();
       },
       eventDraw () {
-        wx.showLoading({
-          title: '图片生成中...',
-          mask: true
-        })
-        // let user = wx.getStorageSync('userInfo');
-        let user = this.userInfo;
-        console.log('user', user)
-        this.painting = {
-          width: 375,
-          height: 555,
-          clear: true,
-          views: [
-            {
-              type: 'rect',
-              background: '#F6FCFF',
-              top: 0,
-              left: 0,
-              width: 375,
-              height: 555
-            },
-            {
-              type: 'text',
-              content: '视力测量结果',
-              fontSize: 20,
-              color: '#00A0E9',
-              textAlign: 'left',
-              top: 20,
-              left: 20
-            },
-            {
-              type: 'image',
-              url: user.avatarUrl,
-              top: 70,
-              left: 35,
-              width: 55,
-              height: 55
-            },
-            // {
-            //   type: 'image',
-            //   url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531401349117.jpeg',
-            //   top: 27.5,
-            //   left: 29,
-            //   width: 55,
-            //   height: 55
-            // },
-            {
-              type: 'text',
-              content: user.nickName,
-              fontSize: 18,
-              color: '#00A0E9',
-              textAlign: 'left',
-              top: 90,
-              left: 260,
-              bolder: true
-            },
-            {
-              type: 'image',
-              url: '/static/images/sight_view.png',
-              top: 150,
-              left: 9,
-              width: 360,
-              height: 200
-            },
-            {
-              type: 'image',
-              url: '/static/images/circle.png',
-              top: 180,
-              left: 33,
-              width: 140,
-              height: 140
-            },
-            {
-              type: 'text',
-              content: '左眼视力',
-              fontSize: 12,
-              color: '#9E9E9E',
-              textAlign: 'left',
-              top: 220,
-              left: 80,
-            },
-            {
-              type: 'text',
-              content: this.leftEye,
-              fontSize: 35,
-              color: '#00A0E9',
-              textAlign: 'left',
-              top: 240,
-              left: 80,
-            },
-            {
-              type: 'image',
-              url: '/static/images/circle.png',
-              top: 180,
-              left: 203,
-              width: 140,
-              height: 140
-            },
-            {
-              type: 'text',
-              content: '右眼视力',
-              fontSize: 12,
-              color: '#9E9E9E',
-              textAlign: 'left',
-              top: 220,
-              left: 250,
-            },
-            {
-              type: 'text',
-              content: this.rightEye,
-              fontSize: 35,
-              color: '#00A0E9',
-              textAlign: 'left',
-              top: 240,
-              left: 247,
-            },
-            {
-              type: 'image',
-              url: '/static/images/qr_code.png',
-              top: 380,
-              left: 130,
-              width: 120,
-              height: 120
-            },
-            {
-              type: 'text',
-              content: '关注公众号，了解护眼方法大全',
-              fontSize: 13,
-              color: '#9E9E9E',
-              textAlign: 'left',
-              top: 520,
-              left: 95,
-              bolder: true
-            }
-          ]
+        if(this.shareImage === '') { // 不存在图片才去获取地址
+          wx.showLoading({
+            title: '图片生成中...',
+            mask: true
+          })
+          let user = this.userInfo;
+          this.painting = {
+            width: 375,
+            height: 555,
+            clear: true,
+            views: [
+              {
+                type: 'rect',
+                background: '#F6FCFF',
+                top: 0,
+                left: 0,
+                width: 375,
+                height: 555
+              },
+              {
+                type: 'text',
+                content: '视力测量结果',
+                fontSize: 20,
+                color: '#00A0E9',
+                textAlign: 'left',
+                top: 20,
+                left: 20
+              },
+              {
+                type: 'image',
+                url: user.avatarUrl,
+                top: 70,
+                left: 35,
+                width: 55,
+                height: 55
+              },
+              {
+                type: 'image',
+                url: '/static/images/white.png',
+                top: 70,
+                left: 35,
+                width: 55,
+                height: 55
+              },
+              {
+                type: 'text',
+                content: user.nickName,
+                fontSize: 18,
+                color: '#00A0E9',
+                textAlign: 'left',
+                top: 90,
+                left: 260,
+                bolder: true,
+                breakWord: true,
+                MaxLineNumber: 2
+              },
+              {
+                type: 'image',
+                url: '/static/images/sight_view.png',
+                top: 150,
+                left: 9,
+                width: 360,
+                height: 200
+              },
+              {
+                type: 'image',
+                url: '/static/images/circle.png',
+                top: 180,
+                left: 33,
+                width: 140,
+                height: 140
+              },
+              {
+                type: 'text',
+                content: '左眼视力',
+                fontSize: 12,
+                color: '#9E9E9E',
+                textAlign: 'left',
+                top: 220,
+                left: 80,
+              },
+              {
+                type: 'text',
+                content: this.leftEye,
+                fontSize: 35,
+                color: '#00A0E9',
+                textAlign: 'left',
+                top: 240,
+                left: 80,
+              },
+              {
+                type: 'image',
+                url: '/static/images/circle.png',
+                top: 180,
+                left: 203,
+                width: 140,
+                height: 140
+              },
+              {
+                type: 'text',
+                content: '右眼视力',
+                fontSize: 12,
+                color: '#9E9E9E',
+                textAlign: 'left',
+                top: 220,
+                left: 250,
+              },
+              {
+                type: 'text',
+                content: this.rightEye,
+                fontSize: 35,
+                color: '#00A0E9',
+                textAlign: 'left',
+                top: 240,
+                left: 247,
+              },
+              {
+                type: 'image',
+                url: '/static/images/qr_code.png',
+                top: 380,
+                left: 130,
+                width: 120,
+                height: 120
+              },
+              {
+                type: 'text',
+                content: '关注公众号，了解护眼方法大全',
+                fontSize: 13,
+                color: '#9E9E9E',
+                textAlign: 'left',
+                top: 520,
+                left: 95,
+                bolder: true
+              }
+            ]
+          }
+        } else { // 已经存在地址，则自动保存
+          this.save_photo();
         }
       },
       save_photo() {
@@ -256,10 +220,48 @@ export default {
                 icon: 'success',
                 duration: 2000
               })
+            },
+            fail(res){
+              if (res.errMsg === "saveImageToPhotosAlbum:fail:auth denied" || res.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+                // 这边微信做过调整，必须要在按钮中触发，因此需要在弹框回调中进行调用
+                wx.showModal({
+                  title: '提示',
+                  content: '需要您授权保存相册',
+                  showCancel: false,
+                  success: modalSuccess => {
+                    wx.openSetting({
+                      success(settingdata) {
+                        if (settingdata.authSetting['scope.writePhotosAlbum']) {
+                          wx.showModal({
+                            title: '提示',
+                            content: '获取权限成功,再次点击图片即可保存',
+                            showCancel: false,
+                          })
+                        } else {
+                          wx.showModal({
+                            title: '提示',
+                            content: '获取权限失败，将无法保存到相册哦~',
+                            showCancel: false,
+                          })
+                        }
+                      },
+                      fail(failData) {
+                        // console.log("failData", failData)
+                      },
+                      complete(finishData) {
+                        // console.log("finishData", finishData)
+                      }
+                    })
+                  }
+                })
+              }
             }
           });
         }
       }
+    },
+    mounted(){
+      
     },
     onShareAppMessage(t) {
       return "button" === t.from && {
@@ -281,21 +283,16 @@ export default {
     .top{
       width: 100%;
       height: 18%;
-      padding: 10rpx;
+      padding: 60rpx;
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
-      .img{
-        width: 19%;
-        height: 73%;
-        margin-right: 20%;
-        img{
-          max-width: 100%;
-          max-height: 100%;
-          border-radius: 50%;
-        }
+      img{
+        width: 150rpx;
+        height: 150rpx;
+        border-radius: 50%;
       }
       span{
         font-size: 38rpx;
@@ -365,13 +362,6 @@ export default {
         }
       }
     }
-    // .canvas{
-    //   position: absolute;
-    //   z-index: 11;
-    //   width: 80%;
-    //   height: 60%;
-    //   border: 2rpx solid red;
-    // }
     .btn_arr{
       width: 100%;
       height: 15%;

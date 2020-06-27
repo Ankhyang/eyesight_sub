@@ -1,14 +1,9 @@
 <template>
-    <!-- <div class="main">
-        <div class="prepare">
-            <prepare @toggleShow="toggleShow"/>
-        </div> 
-    </div> -->
     <div class="container">
         <div class="prepare" v-show="showPrepare">
             <prepare :to="to" @toggleShow="toggleShow"/>
         </div>
-        <div class="content_main">
+        <div class="content_main" v-show="!showPrepare">
             <div class="e_view" @touchend="handletouchend" @touchstart="handletouchtart">
                 <p :class="e_direction" :style="{fontSize: size+'rpx'}">E</p>
             </div>
@@ -25,24 +20,24 @@
             </div>
             <div class="direction">
                 <div class="common top">
-                    <div class="direc_img img" id="up" @tap="choseDirection">
-                        <img src="../../static/images/top.png" alt="上">
+                    <div class="img" id="up">
+                        <img src="../../static/images/top.png" alt="上" @tap="choseDirection">
                     </div>
                 </div>
                 <div class="common center">
-                    <div class="direc_img center_img left_img" id="left" @tap="choseDirection">
-                        <img src="../../static/images/left.png" alt="左">
+                    <div class="center_img left_img" id="left">
+                        <img src="../../static/images/left.png" alt="左" @tap="choseDirection">
                     </div>
                     <div class="no_see" @tap="canotSee">
                         <p>太小了</p>
                         <p>我看不清～</p>
                     </div>
-                    <div class="direc_img center_img right_img" id="right">
+                    <div class="center_img right_img" id="right">
                         <img src="../../static/images/right.png" alt="右" @tap="choseDirection">
                     </div>
                 </div>
                 <div class="common bottom">
-                    <div class="direc_img" id="down">
+                    <div id="down">
                         <img src="../../static/images/bottom.png" alt="下" @tap="choseDirection">
                     </div>
                 </div>
@@ -67,12 +62,15 @@ export default {
         distance: {
             type: Number,
             default: 30
+        },
+        height: {
+            type: Number
         }
     },
     data() {
         return {
             str: 'E',
-            directionData: [ "up", "right", "down", "left" ],
+            directionData: [ "up", "right", "down", "left"],
             lastX: 0,
             lastY: 0,
             eRow: 11,
@@ -98,13 +96,13 @@ export default {
             e30SizeData: {},
             rowNumberData: {},
             rulerType: "bigEyeData",
-            activeFlag: true,
+            activeFlag: false,
             showPrepare: true,
             barTitle: '当前测量【左眼】'
         }
     },
     computed: {
-        ...mapState(['userInfo']),
+        ...mapState(['userInfo', 'config']),
         // 视图区的E方向
         e_direction: function() {
             // 根据direction返回对应的class
@@ -130,16 +128,16 @@ export default {
     methods:{
         // 点击小数或者五分按钮，设置类型
         setRuler(t) {
-            var e, f, s = this.eRow;
-            "decimal" == t.currentTarget.id ? (e = "smallEyeData", f = true) : (e = "bigEyeData", f = false)
-            this.rulerType = e;
+            var e, f, r = this, s = this.eRow;
+            "decimal" == t.currentTarget.id ? (e = "smallEyeData", f = true) : (e = "bigEyeData", f = false),
+            this.rulerType = e,
             this.activeFlag = f;
-            this.getRuler(s);
+            r.getRuler(s);
         },
         // 获取规则
-        getRuler: function(t) {
+        getRuler: function(t) { 
             var e, a, i = [];
-            0 == (t = parseInt(t)) && (t = 1);
+            0 == (t = parseInt(t)) && (t = 1),
             "smallEyeData" == this.rulerType ? (e = this.smallEyeData[t], a = this.smallEyeData) : (e = this.bigEyeData[t], a = this.bigEyeData);
             for (var r = 0; r < 5; r++) {
                 var s = t;
@@ -154,23 +152,28 @@ export default {
             var i, r, s = parseInt(this.eRow);
             if (1 == t) {
                 i = this.getEValue(a), t = 2
-                this.testNumber = t;
-                this.leftEye = i;
-                this.countDownStatus = "true";
-                this.rowError = 0;
-                this.rowRight = 0;
-                this.rightScore = 0;
-                this.errorScore = 0;
-                this.totalScore = 0;
+                this.testNumber = t,
+                this.leftEye = i,
+                this.countDownStatus = "true",
+                this.rowError = 0,
+                this.rowRight = 0,
+                this.rightScore = 0,
+                this.errorScore = 0,
+                this.totalScore = 0
+                wx.setNavigationBarTitle({
+                    title: '当前测量【右眼】'
+                });
+                // 切换为右眼测试
+                this.to = "right_test";
                 this.showPrepare = true;
             } else {
                 r = this.getEValue(a), t = 1;
-                this.testNumber = t;
-                this.rightEye = r;
-                this.rowError = 0;
-                this.rowRight = 0;
-                this.rightScore = 0;
-                this.errorScore = 0;
+                this.testNumber = t,
+                this.rightEye = r,
+                this.rowError = 0,
+                this.rowRight = 0,
+                this.rightScore = 0,
+                this.errorScore = 0,
                 this.totalScore = 0;
                 this.uploadVision();
                 var n = util.formatTime(new Date());
@@ -196,15 +199,16 @@ export default {
                 s = parseInt(s) + 1, a = 0, e = 0, i = 0, h = 1, u.getRuler(s);
             }
             var l = this.directionData;
-            r = l[Math.floor(Math.random() * l.length + 1) - 1]
-            this.direction = r;
+            r = l[Math.floor(Math.random() * l.length + 1) - 1],
+            this.direction = r,
             this.size = this.eSizeData[s],
-            this.eRow = s;
-            this.rightScore = e;
-            this.errorScore = a;
-            this.totalScore = i;
-            this.rowError = n;
+            this.eRow = s,
+            this.rightScore = e,
+            this.errorScore = a,
+            this.totalScore = i,
+            this.rowError = n,
             this.rowRight = h;
+            console.log(this.eSizeData[s])
         },
         // 选择方向
         choseDirection(t) {
@@ -219,21 +223,18 @@ export default {
         // 上传测试结果
         uploadVision(e) {
             var a = wx.getStorageSync("userId"), i = Date.parse(new Date()) / 1e3;
-            // wx.request({
-            //     url: config.staticUrl + "/api/v1/save/logv",
-            //     method: 'POST',
-            //     data: {
-            //         createDate: util.formatTime(new Date()),
-            //         height: this.distance,
-            //         visionLeft: this.leftEye,
-            //         visionReight: this.rightEye,
-            //         userId: a,
-            //         userName: this.userInfo.nickName
-            //     },
-            //     success: function(t) {
-                    
-            //     }
-            // });
+            const data = {
+                openid: this.config.openid,
+                visionLeft: this.leftEye,
+                visionReight: this.rightEye,
+                height: this.height,
+            }
+            let s = this.$service.save_sight_info('/api/v1/save/logv', data, 'POST');
+            s.then(res => {
+                console.log('res', res)
+            }).catch(error => {
+
+            })
         },
         // 看不清
         canotSee(t) {
@@ -273,19 +274,22 @@ export default {
         // 准备的子组件回调
         toggleShow(val) {
             if(val === 'left_test') {
-                this.barTitle = '当前测试【左眼】';
+                this.barTitle = '当前测量【左眼】';
                 this.to = 'right_test';
             } else {
-                this.barTitle = '当前测试【右眼】';
+                this.barTitle = '当前测量【右眼】';
                 this.to = 'left_test';
             }
+            wx.setNavigationBarTitle({
+                title: this.barTitle
+            });
             this.showPrepare = false;
         }
     },
     created() {
         wx.setNavigationBarTitle({
             title: this.barTitle
-        })
+        });
     },
     mounted() {
         var a, i = this, r = i.eRow, s = "", o = i.directionData, n = util.getSmallEyeData(), 
@@ -293,15 +297,15 @@ export default {
         c = util.getRowNumberData(), d = wx.getStorageSync("results"),
         g = (a = 60 === this.distance ? u : l)[r];
         s = o[Math.floor(Math.random() * o.length + 1) - 1], 
-        this.smallEyeData = n;
-        this.bigEyeData = h ;
-        this.eSizeData = a ;
-        this.e60SizeData = u ;
-        this.e30SizeData = l ;
-        this.rowNumberData = c ;
-        this.size = g ;
-        this.direction = s ;
-        this.eRow = r ;
+        this.smallEyeData = n,
+        this.bigEyeData = h,
+        this.eSizeData = a,
+        this.e60SizeData = u ,
+        this.e30SizeData = l,
+        this.rowNumberData = c ,
+        this.size = g ,
+        this.direction = s ,
+        this.eRow = r ,
         d[0] && (g = a[r = d[0].eRow], i.getRuler(d[0].eRow), this.eRow = r, this.size = g);
     }
 }
@@ -404,27 +408,23 @@ export default {
         }
         .direction{
             width: 100%;
-            height: 45%;
+            height: 560rpx;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             .common{
-                height: 28%;
+                height: 155rpx;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
             .center{
-                height: 40%;
+                height: 212rpx;
             }
-            .direc_img{
-                width: 23%;
-                height: 96%;
-                img{
-                    max-width: 100%;
-                    max-height: 100%;
-                }
+            img{
+                width: 150rpx;
+                height: 150rpx;
             }
             .center{
                 width: 100%;

@@ -23,8 +23,11 @@ export default {
     },
     methods: {
         backToParent() {
-            this.$emit('toggleShow', {from : this.to})
+            this.$emit('toggleShow', this.to)
         }
+    },
+    created(){
+        
     }
 }
 </script>

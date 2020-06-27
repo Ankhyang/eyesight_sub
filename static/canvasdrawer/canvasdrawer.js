@@ -5,10 +5,8 @@ Component({
       type: Object,
       value: {view: []},
       observer (newVal, oldVal) {
-        // console.log(newVal, oldVal);
         if (!this.data.isPainting) {
-          if (JSON.stringify(newVal) !== JSON.stringify(oldVal) &&
-            newVal && newVal.width && newVal.height) {
+          if (JSON.stringify(newVal) !== JSON.stringify(oldVal) && newVal && newVal.width && newVal.height) {
             this.setData({
               showCanvas: true,
               isPainting: true
