@@ -31,7 +31,7 @@
     </div>
     <div class="share">
       <div class="click">
-        <button class="click_here" open-type="contact">
+        <button class="click_here" open-type="contact" @contact="reply">
           <span>点击这里</span>
           <img class="btnImg" src="../../../static/images/click_here.png" alt="点击这里">
         </button>
@@ -48,20 +48,20 @@ export default {
         return {
             leftEye: '',
             rightEye: '',
-            time: '',
-            eRow: '22',
             shareImage: '',
-            painting: {}
+            painting: {},
+            resultStatus: !1,
+            results: []
         }
     },
     computed: {
-      ...mapState(['userInfo'])
+      ...mapState(['userInfo', 'config'])
     },
     onLoad(q) {
-      this.leftEye = q.leftEye;
-      this.rightEye = q.rightEye;
-      this.time = q.time;
-      this.eRow = q.eRow;
+      var e = this, s = wx.getStorageSync("results") || [];
+      s.length > 1 && s.pop(), s.length >= 4 && (this.resultStatus = !0), 
+      s.unshift(q), wx.setStorageSync("results", s), this.leftEye = q.leftEye,
+      this.rightEye = q.rightEye, this.results = s;
     },
     methods: {
       eventGetImage (event) {
@@ -246,10 +246,8 @@ export default {
                         }
                       },
                       fail(failData) {
-                        // console.log("failData", failData)
                       },
                       complete(finishData) {
-                        // console.log("finishData", finishData)
                       }
                     })
                   }
@@ -258,10 +256,14 @@ export default {
             }
           });
         }
+      },
+      reply(e) {
+        let d = {
+          openid: this.config.openid,
+          userId: this.config.user_id
+        }
+        // this.$service.reply_auto(d);
       }
-    },
-    mounted(){
-      
     },
     onShareAppMessage(t) {
       return "button" === t.from && {

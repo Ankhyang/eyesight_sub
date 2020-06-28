@@ -54,19 +54,7 @@ import { mapState } from 'vuex'
 
 export default {
     components: { prepare },
-    props: {
-        to: {
-            type: String,
-            default: 'left_test'
-        },
-        distance: {
-            type: Number,
-            default: 30
-        },
-        height: {
-            type: Number
-        }
-    },
+    props: ['to', 'distance', 'height'],
     data() {
         return {
             str: 'E',
@@ -176,8 +164,7 @@ export default {
                 this.errorScore = 0,
                 this.totalScore = 0;
                 this.uploadVision();
-                var n = util.formatTime(new Date());
-                this.showResult(this.leftEye, r, n, s);
+                this.showResult(this.leftEye, r);
             }
         },
         // 测试视力
@@ -208,7 +195,6 @@ export default {
             this.totalScore = i,
             this.rowError = n,
             this.rowRight = h;
-            console.log(this.eSizeData[s])
         },
         // 选择方向
         choseDirection(t) {
@@ -222,18 +208,20 @@ export default {
         },
         // 上传测试结果
         uploadVision(e) {
-            var a = wx.getStorageSync("userId"), i = Date.parse(new Date()) / 1e3;
+            var i = Date.parse(new Date()) / 1e3;
             const data = {
                 openid: this.config.openid,
                 visionLeft: this.leftEye,
                 visionReight: this.rightEye,
                 height: this.height,
+                userId: this.config.user_id,
+                userName: this.userInfo.nickName
             }
-            let s = this.$service.save_sight_info('/api/v1/save/logv', data, 'POST');
+            let s = this.$service.save_sight_info(data);
             s.then(res => {
-                console.log('res', res)
+                console.log('上传视力信息成功');
             }).catch(error => {
-
+                console.log('上传视力信息失败');
             })
         },
         // 看不清
@@ -268,7 +256,7 @@ export default {
         // 结束后跳转到结果页面
         showResult(t, e, a, i){
             wx.navigateTo({ 
-                url: `/pages/result/main?leftEye=${t}&rightEye=${e}&time=${a}&eRow=${i}`
+                url: `/pages/result/main?leftEye=${t}&rightEye=${e}`
             });
         },
         // 准备的子组件回调

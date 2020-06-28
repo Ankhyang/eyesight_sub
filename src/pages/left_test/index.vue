@@ -7,16 +7,17 @@
 <script>
 import eyesight from '@/components/eyesight_test.vue'
 export default {
-    props: {
-        distance: {
-            type: Number,
-            default: 30
-        },
-        height: {
-            type: Number
+    data(){
+        return {
+            distance: '',
+            height: ''
         }
     },
-    components: {eyesight}
+    components: {eyesight},
+    onLoad(options){
+        this.distance = options.distance;
+        this.height = options.height;
+    }
 }
 </script>
 

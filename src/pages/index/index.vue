@@ -22,8 +22,9 @@ import { mapMutations } from 'vuex'
 export default {
   data(){
     return {
+      userInfo: {},
       openId: '',
-      phone: '',
+      phoneNumber: '',
       code: '',
       session_key: '',
       flag: true // 授权用户信息
@@ -35,11 +36,10 @@ export default {
       const userInfo = event.mp.detail.userInfo;
       if(userInfo) {
         this.setUserInfo(userInfo);
+        this.userInfo = userInfo;
         // false为授权电话号码
         this.flag = false;
-        wx.navigateTo({
-          url: "/pages/height/main"
-        })
+        // 根据code获取openid和session_key
         wx.login({
           success: res => { 
             if (res.code) {
@@ -65,36 +65,50 @@ export default {
     },
     //  获取手机号码
     getPhoneNumber(e) {
-      console.log(e)
-      // 获取手机号码
+      console.log('获取手机号码来了。。。。')
       const data = {
-        code: this.code,
         iv: e.target.iv,
         session_key: this.session_key,
         encryptedData: e.target.encryptedData
       }
-      let s = this.$service.getPhoneNum('/api/v1/wx/getPhone', data, 'GET');
-      console.log('s', s)
+      console.log('data', data)
+      let s = this.$service.getPhoneNum(data);
       s.then(res => {
         console.log('res', res)
+        if(res.code === 200) {
+          this.phoneNumber = res.data.phoneNumber;
+          // 保存用户信息
+          this.save_user_info();
+          // 跳转到身高界面
+          wx.navigateTo({
+            url: "/pages/height/main"
+          })
+        }
       }).catch(error => {
         
       })
     },
     save_user_info() {
+      console.log('保存用户信息来了。。。。')
       // 保存用户信息
       const d = {
-        city: userInfo.city,
-        country: userInfo.country,
-        gendel: userInfo.gender,
-        // mobilePhone: userInfo.,
+        head: this.userInfo.avatarUrl,
+        city: this.userInfo.city,
+        country: this.userInfo.country,
+        gendel: this.userInfo.gender,
+        mobilePhone: this.phoneNumber,
         openId: this.openId,
-        province: userInfo.province,
+        province: this.userInfo.province,
         // unionId: ,
-        userName: userInfo.nickName,
-        // userToken: ''
+        // userToken: '',
+        userName: this.userInfo.nickName
       }
-      let s = this.$service.save_userInfo(d)
+      let s = this.$service.save_userInfo(d);
+      s.then(res => {
+        console.log('保存用户信息成功')
+      }).catch(error => {
+        console.log('保存用户信息失败')
+      })
     }
   }
 }

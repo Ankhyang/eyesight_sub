@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://host1.cqgfwlkj.com:8084'
+// const API_BASE_URL = 'http://host1.cqgfwlkj.com:8084'
+const API_BASE_URL = 'http://139.129.242.140:18004'
 
 const request = (url, data, method) => { 
     let _url = API_BASE_URL  + url;
@@ -36,6 +37,10 @@ export default {
     // 获取手机号码
     getPhoneNum: data => {
         return request('/api/v1/wx/getPhone', data, 'GET')
+    },
+    // 客服自动回复
+    reply_auto: data => {
+        return request('/api/v1/wx/', data, 'GET')
     }
 }
 
