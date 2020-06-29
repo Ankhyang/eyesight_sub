@@ -20,7 +20,7 @@ export default {
     setTimeout(() => {
         wx.setStorageSync("baidu_token", e), this.sysBaiduOpenApiToken();
     }, 5);
-    
+    wx.setStorageSync("results", null)
     // wx.getStorageSync("userId") || "" || wx.login({
     //   success: function(e) { 
     //     console.log('wx.login', e)

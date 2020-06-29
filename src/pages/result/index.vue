@@ -51,17 +51,22 @@ export default {
             shareImage: '',
             painting: {},
             resultStatus: !1,
-            results: []
+            results: [],
+            userInfo: {}
         }
     },
     computed: {
-      ...mapState(['userInfo', 'config'])
+      ...mapState(['config'])
     },
     onLoad(q) {
-      var e = this, s = wx.getStorageSync("results") || [];
-      s.length > 1 && s.pop(), s.length >= 4 && (this.resultStatus = !0), 
-      s.unshift(q), wx.setStorageSync("results", s), this.leftEye = q.leftEye,
-      this.rightEye = q.rightEye, this.results = s;
+      // var e = this, s = wx.getStorageSync("results") || [];
+      // s.length > 1 && s.pop(), s.length >= 4 && (this.resultStatus = !0), 
+      // s.unshift(q), wx.setStorageSync("results", s), this.leftEye = q.leftEye,
+      // this.rightEye = q.rightEye, this.results = s;
+      this.leftEye = q.leftEye;
+      this.rightEye = q.rightEye;
+      this.userInfo = wx.getStorageSync('userInfo');
+      console.log('userInfo', this.userInfo)
     },
     methods: {
       eventGetImage (event) {
@@ -184,7 +189,7 @@ export default {
                 color: '#00A0E9',
                 textAlign: 'left',
                 top: 240,
-                left: 247,
+                left: 250,
               },
               {
                 type: 'image',

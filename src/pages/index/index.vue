@@ -37,8 +37,6 @@ export default {
       if(userInfo) {
         this.setUserInfo(userInfo);
         this.userInfo = userInfo;
-        // false为授权电话号码
-        this.flag = false;
         // 根据code获取openid和session_key
         wx.login({
           success: res => { 
@@ -46,10 +44,20 @@ export default {
               this.code = res.code;
               let r = this.$service.getOpenId({code: res.code})
               r.then(v => {
-                // 获取到openid和session_key
+                // 获取到openid和session_key，user_id
                 this.setConfig(v.data)
                 this.openId = v.data.openid;
                 this.session_key = v.data.session_key;
+                // 获取缓存里面的手机号
+                let phone = wx.getStorageSync('phoneNumber');
+                if(phone) {
+                  this.phoneNumber = phone;
+                  // 保存用户信息
+                  this.save_user_info();
+                } else {
+                  // 显示授权手机号的按钮
+                  this.flag = false;
+                }
               }).catch(e => {
                 
               })
@@ -65,24 +73,19 @@ export default {
     },
     //  获取手机号码
     getPhoneNumber(e) {
-      console.log('获取手机号码来了。。。。')
       const data = {
         iv: e.target.iv,
         session_key: this.session_key,
         encryptedData: e.target.encryptedData
       }
-      console.log('data', data)
       let s = this.$service.getPhoneNum(data);
       s.then(res => {
-        console.log('res', res)
         if(res.code === 200) {
           this.phoneNumber = res.data.phoneNumber;
+          // 设置手机号缓存
+          wx.setStorageSync('phoneNumber', res.data.phoneNumber);
           // 保存用户信息
           this.save_user_info();
-          // 跳转到身高界面
-          wx.navigateTo({
-            url: "/pages/height/main"
-          })
         }
       }).catch(error => {
         
@@ -106,6 +109,10 @@ export default {
       let s = this.$service.save_userInfo(d);
       s.then(res => {
         console.log('保存用户信息成功')
+        // 跳转到身高界面
+        wx.navigateTo({
+          url: "/pages/height/main"
+        })
       }).catch(error => {
         console.log('保存用户信息失败')
       })

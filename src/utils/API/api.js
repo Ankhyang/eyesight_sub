@@ -1,5 +1,5 @@
-// const API_BASE_URL = 'http://host1.cqgfwlkj.com:8084'
-const API_BASE_URL = 'http://139.129.242.140:18004'
+const API_BASE_URL = 'http://host1.cqgfwlkj.com:8084'
+// const API_BASE_URL = 'http://139.129.242.140:18004'
 
 const request = (url, data, method) => { 
     let _url = API_BASE_URL  + url;

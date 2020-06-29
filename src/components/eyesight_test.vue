@@ -75,9 +75,8 @@ export default {
             rightEye: "",
             testNumber: 1,
             eSizeData: '',
-            time: 3,
             distance: "",
-            ruler: [ "4.8", "4.9", "5.0", "5.1", "5.2" ],
+            ruler: [ "4.8", "4.9", "5.0", "5.1", "5.2"],
             smallEyeData: {},
             bigEyeData: {},
             e60SizeData: {},
@@ -129,8 +128,23 @@ export default {
             "smallEyeData" == this.rulerType ? (e = this.smallEyeData[t], a = this.smallEyeData) : (e = this.bigEyeData[t], a = this.bigEyeData);
             for (var r = 0; r < 5; r++) {
                 var s = t;
-                0 == r ? (s = t - 2, i[r] = s <= 0 ? 0 : a[s]) : 1 == r ? (s = t - 1, i[r] = s <= 0 ? 0 : a[s]) : 2 == r ? i[r] = e : 3 == r ? (s = t + 1, 
-                i[r] = s > 14 ? 0 : a[s]) : (s = t + 2, i[r] = s > 14 ? 0 : a[s]);
+                // 0 == r ? (s = t - 2, i[r] = s <= 0 ? 0 : a[s]) : 1 == r ? (s = t - 1, i[r] = s <= 0 ? 0 : a[s]) : 2 == r ? i[r] = e : 3 == r ? (s = t + 1, 
+                // i[r] = s > 14 ? 0 : a[s]) : (s = t + 2, i[r] = s > 14 ? 0 : a[s]);
+                if(r === 0) {
+                    s = t-2;
+                    i[r] = s <= 0 ? '' : a[s]
+                } else if(r === 1) {
+                    s = t-1;
+                    i[r] = s<= 0 ? '': a[s];
+                } else if(r === 2) {
+                    i[r] = e; 
+                } else if(r === 3) {
+                    s = t + 1;
+                    i[r] = s > 14 ? '' : a[s];
+                } else if(r === 4) {
+                    s = t + 2;
+                    i[r] = s > 14 ? '' : a[s]
+                }
             }
             this.eValue = e;
             this.ruler = i;
@@ -237,7 +251,7 @@ export default {
                 this.totalScore = 0;
                 this.rowError = 1;
                 this.rowRight = r;
-                s.getRuler(a)
+                s.getRuler(a);
             } else {
                 this.setEyeSight(i, 1)
             }
@@ -267,6 +281,25 @@ export default {
             } else {
                 this.barTitle = '当前测量【右眼】';
                 this.to = 'left_test';
+                this.eRow = 11;
+                this.size = 8;
+                if(this.rulerType === 'smallEyeData') {
+                    this.ruler = ['0.6', '0.8', '1.0', '1.2', '1.5']
+                    this.eValue = "1.0";
+                    this.setRuler({
+                        currentTarget: {
+                            id: 'decimal'
+                        }
+                    }); 
+                } else {
+                    this.ruler = [ "4.8", "4.9", "5.0", "5.1", "5.2"]
+                    this.eValue = "5.0";
+                    this.setRuler({
+                        currentTarget: {
+                            id: 'five_mark'
+                        }
+                    }); 
+                }
             }
             wx.setNavigationBarTitle({
                 title: this.barTitle
@@ -288,13 +321,14 @@ export default {
         this.smallEyeData = n,
         this.bigEyeData = h,
         this.eSizeData = a,
-        this.e60SizeData = u ,
+        this.e60SizeData = u,
         this.e30SizeData = l,
-        this.rowNumberData = c ,
-        this.size = g ,
-        this.direction = s ,
-        this.eRow = r ,
-        d[0] && (g = a[r = d[0].eRow], i.getRuler(d[0].eRow), this.eRow = r, this.size = g);
+        this.rowNumberData = c,
+        this.size = g,
+        this.direction = s,
+        this.eRow = r,
+        d && d[0] && (g = a[r = d[0].eRow], i.getRuler(d[0].eRow), this.eRow = r, this.size = g);
+        console.log(this)
     }
 }
 </script>
