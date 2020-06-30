@@ -71,6 +71,9 @@ export default {
         })
       }
     },
+    mounted(){
+      this.flag = true;
+    },
     //  获取手机号码
     getPhoneNumber(e) {
       const data = {
@@ -92,7 +95,6 @@ export default {
       })
     },
     save_user_info() {
-      console.log('保存用户信息来了。。。。')
       // 保存用户信息
       const d = {
         head: this.userInfo.avatarUrl,
@@ -108,7 +110,7 @@ export default {
       }
       let s = this.$service.save_userInfo(d);
       s.then(res => {
-        console.log('保存用户信息成功')
+        this.flag = true;
         // 跳转到身高界面
         wx.navigateTo({
           url: "/pages/height/main"

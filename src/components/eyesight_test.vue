@@ -328,7 +328,6 @@ export default {
         this.direction = s,
         this.eRow = r,
         d && d[0] && (g = a[r = d[0].eRow], i.getRuler(d[0].eRow), this.eRow = r, this.size = g);
-        console.log(this)
     }
 }
 </script>

@@ -136,10 +136,6 @@ Component({
         bolder = false,
         textDecoration = 'none'
       } = params
-      console.log(params);
-      // if(content === '右眼视力' || content === '左眼视力') {
-      //   fontSize = 12;
-      // }
       this.ctx.beginPath()
       this.ctx.setTextBaseline('top')
       this.ctx.setTextAlign(textAlign)

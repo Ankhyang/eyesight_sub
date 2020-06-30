@@ -1,5 +1,6 @@
-const API_BASE_URL = 'http://host1.cqgfwlkj.com:8084'
-// const API_BASE_URL = 'http://139.129.242.140:18004'
+// const API_BASE_URL = 'http://host1.cqgfwlkj.com:8084'
+// const API_BASE_URL = 'http://139.129.242.140:18004'  
+const API_BASE_URL = 'https://shili.willmid.com'
 
 const request = (url, data, method) => { 
     let _url = API_BASE_URL  + url;
@@ -40,7 +41,7 @@ export default {
     },
     // 客服自动回复
     reply_auto: data => {
-        return request('/api/v1/wx/', data, 'GET')
+        return request('/api/v1/wx/sned', data, 'GET')
     }
 }
 

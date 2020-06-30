@@ -159,7 +159,7 @@ export default {
               {
                 type: 'text',
                 content: this.leftEye,
-                fontSize: 35,
+                fontSize: 34,
                 color: '#00A0E9',
                 textAlign: 'left',
                 top: 240,
@@ -185,7 +185,7 @@ export default {
               {
                 type: 'text',
                 content: this.rightEye,
-                fontSize: 35,
+                fontSize: 34,
                 color: '#00A0E9',
                 textAlign: 'left',
                 top: 240,
@@ -263,11 +263,8 @@ export default {
         }
       },
       reply(e) {
-        let d = {
-          openid: this.config.openid,
-          userId: this.config.user_id
-        }
-        // this.$service.reply_auto(d);
+        
+        
       }
     },
     onShareAppMessage(t) {
