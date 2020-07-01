@@ -1,24 +1,27 @@
 <template>
   <div class="main">
     <div class="header">
-      <img src="../../../static/images/logo.png" mode="widthFix" alt="康贝贝">
+      <div class="img">
+        <img class="img_logo" src="../../../static/images/logo.png" mode="widthFix" alt="康贝贝">
+        <img class="img_bg" src="../../../static/images/bg.png" mode="widthFix" alt="眼睛">
+      </div>
     </div>
     <div class="text">
       <p>康贝贝测视力</p>
     </div>    
     <div class="footer">
-      <button class="btn" v-show="flag" open-type="getUserInfo" @getuserinfo="getPerson">
-        授权
-      </button>
-      <button class="btn" v-show="!flag" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+      <button class="btn" v-show="flag" open-type="getUserInfo" @getuserinfo="getPerson" :disabled="saveFlag">
         进入康贝贝～
+      </button>
+      <button class="btn" v-show="!flag" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" :disabled="saveFlag">
+        授权
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   data(){
     return {
@@ -30,11 +33,17 @@ export default {
       flag: true // 授权用户信息
     }
   },
+  computed: {
+    ...mapState(['saveFlag'])
+  },
   methods: {
-    ...mapMutations(['setUserInfo', 'setConfig']),
+    ...mapMutations(['setUserInfo', 'setConfig', 'setSaveFlag']),
     getPerson(event) {
-      const userInfo = event.mp.detail.userInfo;
-      if(userInfo) {
+      const detail = event.mp.detail;
+      if(!this.saveFlag && detail.userInfo) {
+        const userInfo = event.mp.detail.userInfo;
+        // 禁用按钮
+        this.setSaveFlag(true);
         this.setUserInfo(userInfo);
         this.userInfo = userInfo;
         // 根据code获取openid和session_key
@@ -57,42 +66,72 @@ export default {
                 } else {
                   // 显示授权手机号的按钮
                   this.flag = false;
+                  // 启用按钮
+                  this.setSaveFlag(false);
                 }
               }).catch(e => {
-                
+                // 启用按钮
+                this.setSaveFlag(false);
               })
             } else {
-              console.log('登录失败！' + res.errMsg)
+              // 启用按钮
+              this.setSaveFlag(false);
+              wx.showModal({
+                title: '提示',
+                content: res.errMsg,
+                showCancel: false
+              })
             }
           },
           fail(error){
-            console.log('error',error);
+            // 启用按钮
+            this.setSaveFlag(false);
+            wx.showModal({
+              title: '提示',
+              content: error,
+              showCancel: false
+            })
           }
         })
       }
     },
     mounted(){
       this.flag = true;
+      // 启用按钮
+      this.setSaveFlag(false);
     },
     //  获取手机号码
     getPhoneNumber(e) {
-      const data = {
-        iv: e.target.iv,
-        session_key: this.session_key,
-        encryptedData: e.target.encryptedData
-      }
-      let s = this.$service.getPhoneNum(data);
-      s.then(res => {
-        if(res.code === 200) {
-          this.phoneNumber = res.data.phoneNumber;
-          // 设置手机号缓存
-          wx.setStorageSync('phoneNumber', res.data.phoneNumber);
-          // 保存用户信息
-          this.save_user_info();
+      // 判断是否授权
+      const target = e.target;
+      // 已授权
+      if(target.iv && !this.saveFlag) {
+        //  禁用按钮
+        this.setSaveFlag(true);
+        const data = {
+          iv: e.target.iv,
+          session_key: this.session_key,
+          encryptedData: e.target.encryptedData
         }
-      }).catch(error => {
-        
-      })
+        let s = this.$service.getPhoneNum(data);
+        s.then(res => {
+          if(res.code === 200) {
+            this.phoneNumber = res.data.phoneNumber;
+            // 设置手机号缓存
+            wx.setStorageSync('phoneNumber', res.data.phoneNumber);
+            // 保存用户信息
+            this.save_user_info();
+          }
+        }).catch(error => {
+          // 启用按钮
+          this.setSaveFlag(false);
+          wx.showModal({
+            title: '提示',
+            content: error,
+            showCancel: false
+          })
+        })
+      }
     },
     save_user_info() {
       // 保存用户信息
@@ -104,8 +143,6 @@ export default {
         mobilePhone: this.phoneNumber,
         openId: this.openId,
         province: this.userInfo.province,
-        // unionId: ,
-        // userToken: '',
         userName: this.userInfo.nickName
       }
       let s = this.$service.save_userInfo(d);
@@ -116,7 +153,13 @@ export default {
           url: "/pages/height/main"
         })
       }).catch(error => {
-        console.log('保存用户信息失败')
+        // 启用按钮
+        this.setSaveFlag(false);
+        wx.showModal({
+          title: '提示',
+          content: error,
+          showCancel: false
+        })
       })
     }
   }
@@ -131,48 +174,71 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   .header{
+    width: 100%;
     height: 55%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    img{
-      width: 200rpx;
-      height: 200rpx;
+    .img{
+      width: 280rpx;
+      height: 280rpx;
+      position: relative;
+      z-index: 1;
+      .img_logo{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 280rpx;
+        height: 280rpx;
+        z-index: 3;
+      }
+      .img_bg{
+        width: 500rpx;
+        height: 400rpx;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2; 
+        margin-left: -345rpx;
+        margin-top: -300rpx;
+      }
     }
   }
   .text{
     height: 31%;
     text-align: center;
     color: #A5A5A7;
-    font-size: 27rpx;
+    font-size: 25rpx;
+    padding-top: 70rpx;
     p{
-      letter-spacing: 15rpx;
+      letter-spacing: 16rpx;
       font-family:Arial, Helvetica, sans-serif;
     }
   }
   .footer{
     height: 12%;
-    width: 86%;
-    height: 7%;
+    width: 84%;
+    height: 8%;
     overflow: hidden;
-    border: 2rpx solid #00A0E9;
+    border: 1rpx solid #7BC1F1;
     border-radius: 50rpx;
     position: absolute;
     bottom: 7%;
-    font-size: 30rpx;
     display: flex;
     align-items: center;
     justify-content: center;
-    -moz-box-shadow:0px 2px 5px #9EE0FF; 
-    -webkit-box-shadow:0px 2px 5px #9EE0FF; 
-    box-shadow:0px 2px 5px #9EE0FF;
+    -moz-box-shadow:0px 2px 3px #B8E8FF; 
+    -webkit-box-shadow:0px 2px 3px #B8E8FF; 
+    box-shadow:0px 2px 3px #B8E8FF;
     .btn{
       background: #fff;
       width: 100%;
       color: #00A0E9;
       vertical-align: middle;
+      font-weight: normal;
+      font-size: 30rpx;
       &:after{
         border: 0; 
       }

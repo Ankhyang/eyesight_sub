@@ -6,6 +6,7 @@
 
 <script>
 import eyesight from '@/components/eyesight_test.vue'
+import { mapMutations } from 'vuex'
 export default {
     data(){
         return {
@@ -14,6 +15,13 @@ export default {
         }
     },
     components: {eyesight},
+    methods:{
+        ...mapMutations(['setNextFlag'])
+    },
+    mounted() {
+        // 启用下一步按钮
+        this.setNextFlag(false);
+    },
     onLoad(options){
         this.distance = options.distance;
         this.height = options.height;

@@ -5,9 +5,9 @@
         </div>
         <div class="ruler">
             <div class="choose">
-                <picker-view :value="value" indicatorStyle="height:50px;" @change="bindHeight" maskStyle="background: none;" style="width: 100%; height: 95%;">
+                <picker-view :value="value" indicatorStyle="height:35px;border:none;" @change="bindHeight" maskStyle="background: none;" style="width: 100%; height: 95%;">
                     <picker-view-column>
-                        <p v-for="(item, index) in heights" :class="value[0] === index ? 'selected':'noSelected'" :key="index" style="line-height: 50px;background: #F6FCFF;">
+                        <p v-for="(item, index) in heights" :class="value[0] === index ? 'selected':'noSelected'" :key="index" style="line-height: 35px;background: #F6FCFF;">
                             {{item}}
                         </p>
                     </picker-view-column> 
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="height">
-            <p>偷偷告诉你，真实的身高视力测试才会准哦～</p>
+            <p class="tell">偷偷告诉你，真实的身高视力测试才会准哦～</p>
             <div class="height_num">
                 <div class="img">
                     <img src="../../../static/images/height_input.png" alt="">
@@ -26,13 +26,16 @@
                 <p class="num">{{height}}<span>CM</span></p>
             </div>
         </div>
-        <div class="next" @click="goToTest">
-            <span>身高正确，下一步</span>
+        <div class="next">
+            <button class="btn" :disabled="nextFlag" @click="goToTest">
+                身高正确，下一步
+            </button>
         </div>
     </div>
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex'
 export default {
     data() {
         return {
@@ -42,13 +45,19 @@ export default {
             isIphoneX: false
         }
     },
+    computed: {
+        ...mapState(['nextFlag'])
+    },
     methods:{
+        ...mapMutations(['setNextFlag', 'setSaveFlag']),
         bindHeight(e) {
             var a = e.mp.detail.value;
             this.value = a;
             this.height = this.heights[a[0]];
         },
         goToTest() {
+            // 禁用按钮
+            this.setNextFlag(true);
             var a = this.height, t;
             t = (t = (a - a / 8) / 2 - 18) <= 45 ? 30 : 60;
             wx.navigateTo({
@@ -64,6 +73,10 @@ export default {
             this.value = [40];
         } , 0)
         this.isIphoneX = wx.getStorageSync('isIphoneX');
+    },
+    mounted(){
+        // 启用进入按钮
+        this.setSaveFlag(false)
     }
 }
 </script>
@@ -72,11 +85,16 @@ export default {
 .container{
     .selected{
         color: #00A0E9;
-        font-size: 40rpx;
+        font-size: 54rpx;
+        opacity: 1;
+        padding: 3rpx 0;
+        box-sizing: border-box;
     }
     .noSelected{
         color: #666;
-        opacity: 0.6;
+        padding-left: 27rpx;
+        font-size: 26rpx;
+        opacity: 0.3;
     }
     width: 100%;
     height: 100%;
@@ -85,55 +103,49 @@ export default {
     justify-content: center;
     position: fixed;
     .bg{
-        width: 41%;
+        width: 45%;
         height: 50%;
         margin-top: 36%;
         margin-right: 16%;
         img{
-            max-width: 100%;
-            max-height: 100%;
-            height: 100%;
+            height: 604rpx;
+            width: 340rpx;
         }
     }
     .ruler{
         width: 20%;
-        height: 50%;
+        height: 600rpx;
         position: absolute;
         z-index: 0;
         right: 4%;
         top: 12%;
         .choose{
             width: 100%;
-            height: 100%;
+            height: 600rpx;
             position: absolute;
             top: 0;
             z-index: 2;
         }
         .img{
             width: 32%;
-            height: 100%;
+            height: 600rpx;
             position: absolute;
-            top: 7%;
             left: -31%;
+            top:-46rpx;
             z-index: 1;
             &:before{
                 position: absolute;
-                top: 39.5%;
+                top: 327rpx;
                 content: '';
-                width: 44rpx;
-                height: 9rpx;
+                width: 35rpx;
+                height: 8rpx;
                 background: #00A0E9;
                 border-top-right-radius: 6rpx;
                 border-bottom-right-radius: 6rpx;
             }
             img{
-                max-width: 100%;
-                max-height: 100%;
-            }
-        }
-        .img_x{
-            &:before{
-                top: 40%;
+                width: 55rpx;
+                height: 650rpx;
             }
         }
     }
@@ -144,12 +156,16 @@ export default {
         position: absolute;
         top: 10%;
         left: 2%;
-        p{
-            font-size: 26rpx;
+        .tell{
+            height: 80rpx;
+            width: 300rpx;
+            text-align: center;
+            font-size: 25rpx;
             color: #A5A5A7;
-            padding-bottom: 20rpx;
         }
         .height_num{
+            position: relative;
+            width: 300rpx;
             height: 150rpx;
             .img{
                 width: 80%;
@@ -161,8 +177,8 @@ export default {
             }
             .num{
                 position: absolute;
-                top: 142rpx;
-                left: 90rpx;
+                top: 34rpx;
+                left: 70rpx;
                 font-size: 37rpx;
                 color: #00A0E9;
                 span{
@@ -173,19 +189,27 @@ export default {
         }
     }
     .next{
-        width: 86%;
-        height: 7%;
-        border: 2rpx solid #00A0E9;
+        width: 90%;
+        height: 76rpx;
+        overflow: hidden;
+        border: 2rpx solid #7BC1F1;
         border-radius: 50rpx;
         position: absolute;
         bottom: 7%;
-        font-size: 30rpx;
         display: flex;
         align-items: center;
         justify-content: center;
-        span{ 
+        .btn{
+            background: #fff;
+            width: 100%;
             color: #00A0E9;
+            font-weight: normal;
+            font-size: 30rpx;
+            &:after{
+                border: 0; 
+            }
         }
     }
+    
 }
 </style>

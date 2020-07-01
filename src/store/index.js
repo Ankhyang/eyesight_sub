@@ -6,7 +6,9 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		userInfo: {},
-		config: {}
+		config: {},
+		nextFlag: false,
+		saveFlag: false
 	},
 	mutations: {
 		//设置用户信息
@@ -17,6 +19,12 @@ const store = new Vuex.Store({
 		setConfig(state, config) {
 			state.config = config;
 			wx.setStorageSync('config', config);
+		},
+		setNextFlag(state, flag) {
+			state.nextFlag = flag;
+		},
+		setSaveFlag(state, flag) {
+			state.saveFlag = flag;
 		}
 	},
 	actions: {

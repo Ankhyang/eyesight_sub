@@ -85,7 +85,7 @@ export default {
             rulerType: "bigEyeData",
             activeFlag: false,
             showPrepare: true,
-            barTitle: '当前测量【左眼】'
+            barTitle: '左眼测量准备'
         }
     },
     computed: {
@@ -163,7 +163,7 @@ export default {
                 this.errorScore = 0,
                 this.totalScore = 0
                 wx.setNavigationBarTitle({
-                    title: '当前测量【右眼】'
+                    title: '右眼测量准备'
                 });
                 // 切换为右眼测试
                 this.to = "right_test";
@@ -384,13 +384,13 @@ export default {
             display: flex;
             width: 100%;
             height: 17%;
-            padding: 34rpx;
+            padding: 17rpx;
             box-sizing: border-box;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
             .type_img{
-                width: 120rpx;
+                width: 116rpx;
                 height: 100rpx;
                 color: #9C9C9C;
                 border: 2rpx solid #9C9C9C;
@@ -406,7 +406,7 @@ export default {
                 .num{
                     font-size: 37rpx;
                     color: #00A0E9;
-                    opacity: 0.6;
+                    opacity: 0.4;
                     padding: 10rpx;
                 }
                 .num_active{
@@ -428,7 +428,8 @@ export default {
             }
         }
         .direction{
-            width: 100%;
+            width: 80%;
+            margin: 0 auto;
             height: 560rpx;
             display: flex;
             flex-direction: column;
@@ -444,30 +445,23 @@ export default {
                 height: 212rpx;
             }
             img{
-                width: 150rpx;
-                height: 150rpx;
+                width: 144rpx;
+                height: 144rpx;
             }
             .center{
                 width: 100%;
                 flex-direction: row;
-                .center_img{
-                    width: 20%;
-                    height: 70%;
-                }
-                .left_img{
-                    margin-right: 7%;
-                }
-                .right_img{
-                    margin-left: 7%;
-                }
+                align-items: center;
+                justify-content: space-between;
                 .no_see{
-                    width: 28%;
-                    height: 60%;
+                    width: 199rpx;
+                    height: 125rpx;
                     background: #fff;
                     box-sizing: border-box;
-                    font-size: 26rpx;
+                    font-size: 27rpx;
                     border: 2rpx solid #00A0E9;
-                    border-radius: 24rpx;
+                    box-sizing: border-box;
+                    border-radius: 20rpx;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -475,7 +469,7 @@ export default {
                     position: relative;
                     &:before{
                         content: '点击E字开口方向';
-                        font-size: 21rpx;
+                        font-size: 23rpx;
                         color: #9C9C9C;
                         position: absolute;
                         top: -30%;

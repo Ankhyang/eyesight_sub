@@ -11,6 +11,7 @@
         <div class="circle_3">
           <p class="sight">左眼视力</p>
           <p class="num">{{leftEye}}</p>
+          <p class="small">5.0</p>
         </div>
       </div>
       <div class="circle">
@@ -19,6 +20,7 @@
         <div class="circle_3">
           <p class="sight">右眼视力</p>
           <p class="num">{{rightEye}}</p>
+          <p class="small">5.0</p>
         </div>
       </div>
     </div>
@@ -29,7 +31,10 @@
         <button class="btn" open-type="share">让朋友测一下～</button>
         <button class="btn" @click="eventDraw">保存至手机相册～</button>
     </div>
-    <div class="share">
+    <div class="img">
+      <img src="../../../static/images/bg.png" alt="眼睛">
+    </div>
+    <!-- <div class="share">
       <div class="click">
         <button class="click_here" open-type="contact" @contact="reply">
           <span>点击这里</span>
@@ -37,7 +42,28 @@
         </button>
       </div>
       <p class="focus">关注公众号“了解护眼方法大全”</p> 
+    </div> -->
+    <div class="share">
+      <div class="share_more">
+        <img class="finger" src="../../../static/images/finger.png" alt="手指">
+        <p class="more">了解更多护眼方法大全</p>
+      </div>
+      <img @click="showModal" class="focus" src="../../../static/images/focus.png" alt="关注">
     </div>
+    <div class="tips" v-if="showTipsFlag">
+      <div class="mask"></div>
+      <div class="modal_div">
+        <div class="close_img">
+          <img @click="close" src="../../../static/images/fork.png" alt="关闭">
+        </div>
+        <p>在客服对话中回复数字1</p>
+        <p>关注【康贝贝】</p>
+        <button class="click_here" open-type="contact" @click="go">
+          去关注
+        </button>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -52,7 +78,8 @@ export default {
             painting: {},
             resultStatus: !1,
             results: [],
-            userInfo: {}
+            userInfo: {},
+            showTipsFlag: false
         }
     },
     computed: {
@@ -66,7 +93,6 @@ export default {
       this.leftEye = q.leftEye;
       this.rightEye = q.rightEye;
       this.userInfo = wx.getStorageSync('userInfo');
-      console.log('userInfo', this.userInfo)
     },
     methods: {
       eventGetImage (event) {
@@ -82,8 +108,8 @@ export default {
           })
           let user = this.userInfo;
           this.painting = {
-            width: 375,
-            height: 555,
+            width: 390,
+            height: 800,
             clear: true,
             views: [
               {
@@ -91,8 +117,8 @@ export default {
                 background: '#F6FCFF',
                 top: 0,
                 left: 0,
-                width: 375,
-                height: 555
+                width: 390,
+                height: 800
               },
               {
                 type: 'text',
@@ -134,7 +160,7 @@ export default {
               {
                 type: 'image',
                 url: '/static/images/sight_view.png',
-                top: 150,
+                top: 180,
                 left: 9,
                 width: 360,
                 height: 200
@@ -142,7 +168,7 @@ export default {
               {
                 type: 'image',
                 url: '/static/images/circle.png',
-                top: 180,
+                top: 210,
                 left: 33,
                 width: 140,
                 height: 140
@@ -153,7 +179,7 @@ export default {
                 fontSize: 12,
                 color: '#9E9E9E',
                 textAlign: 'left',
-                top: 220,
+                top: 250,
                 left: 80,
               },
               {
@@ -162,13 +188,22 @@ export default {
                 fontSize: 34,
                 color: '#00A0E9',
                 textAlign: 'left',
-                top: 240,
+                top: 270,
                 left: 80,
+              },
+              {
+                type: 'text',
+                content: '5.0',
+                fontSize: 12,
+                color: '#424242',
+                textAlign: 'left',
+                top: 310,
+                left: 95,
               },
               {
                 type: 'image',
                 url: '/static/images/circle.png',
-                top: 180,
+                top: 210,
                 left: 203,
                 width: 140,
                 height: 140
@@ -179,7 +214,7 @@ export default {
                 fontSize: 12,
                 color: '#9E9E9E',
                 textAlign: 'left',
-                top: 220,
+                top: 250,
                 left: 250,
               },
               {
@@ -188,13 +223,22 @@ export default {
                 fontSize: 34,
                 color: '#00A0E9',
                 textAlign: 'left',
-                top: 240,
+                top: 270,
                 left: 250,
+              },
+              {
+                type: 'text',
+                content: '5.0',
+                fontSize: 12,
+                color: '#424242',
+                textAlign: 'left',
+                top: 310,
+                left: 267,
               },
               {
                 type: 'image',
                 url: '/static/images/qr_code.png',
-                top: 380,
+                top: 410,
                 left: 130,
                 width: 120,
                 height: 120
@@ -205,7 +249,7 @@ export default {
                 fontSize: 13,
                 color: '#9E9E9E',
                 textAlign: 'left',
-                top: 520,
+                top: 550,
                 left: 95,
                 bolder: true
               }
@@ -262,9 +306,14 @@ export default {
           });
         }
       },
-      reply(e) {
-        
-        
+      showModal(){
+        this.showTipsFlag = true;
+      },
+      go(){
+        this.showTipsFlag = false;
+      },
+      close() {
+        this.showTipsFlag = false;
       }
     },
     onShareAppMessage(t) {
@@ -301,12 +350,14 @@ export default {
       span{
         font-size: 38rpx;
         color: #00A0E9;
+        font-weight: 600;
       }
     }
     .result{
       width: 92%;
       height: 36%;
       margin: 25rpx;
+      z-index: 5;
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
@@ -363,12 +414,17 @@ export default {
             font-size: 72rpx;
             color: #00A0E9;
           }
+          .small{
+            font-size: 22rpx;
+            color: #424242;
+          }
         }
       }
     }
     .btn_arr{
       width: 100%;
       height: 15%;
+      z-index: 4;
       display: flex;
       flex-direction: row;
       justify-content: space-around;
@@ -376,7 +432,7 @@ export default {
       .btn{
         width: 40%;
         height: 45%;
-        border: 2rpx solid #00A0E9;
+        border: 2rpx solid #52C8FF;
         border-radius: 50rpx;
         font-size: 30rpx;
         color: #00A0E9;
@@ -395,75 +451,159 @@ export default {
         margin-right: 6%;
       }
     }
-    // .share-image {
-    //   width: 900rpx;
-    //   height: 800rpx;
-    //   margin: 0 75rpx;
-    //   border: 2rpx solid black;
-    //   position: absolute;
-    //   z-index: 222;
-    // }
+    .img{
+      position: absolute;
+      top: 43%;
+      left: -36%;
+      z-index: 2;
+      // bottom: 234rpx;
+    }
     .share{
-      width: 92%;
-      height: 30%;
-      padding-top: 5%;
-      box-sizing: border-box;
-      .click{
+      width: 100%;
+      height: 31%;
+      .share_more{
         width: 100%;
-        height: 15%;
+        box-sizing: border-box;
         display: flex;
-        flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
-        .here{
-          font-size: 28rpx;
-          color: #00A0E9;
-          font-weight: bold;
-          text-decoration: underline;
-          letter-spacing: 4rpx;
+        position: absolute;
+        bottom: 249rpx;
+        padding-left: 27rpx;
+        .finger{
+          width: 47rpx;
+          height: 62rpx;
+          z-index: 8;
         }
-        .click_here {
-          width: 80%;
-          margin-top: 20rpx;
-          background-color: #F6FCFF;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-          &:after{
-            border: 0; 
-          }
-          .btnImg {
-            margin-left: 30rpx;
-            width: 40rpx;
-            height: 28rpx;
-          }
-          span{
-            font-size: 26rpx;
-            color: #00A0E9;
-            font-weight: bold;
-            text-decoration: underline;
-          }
-        }
-        .img{
-          width: 5%;
-          height: 58%;
-          padding-left: 4%;
-          img{
-            max-width: 100%;
-            max-height: 100%;
-          }
+        .more{
+          padding-left: 10rpx;
+          font-size: 25rpx;
+          color: #A3A3A3;
         }
       }
       .focus{
         width: 100%;
-        height: 10%;
-        text-align: center;
-        padding: 20rpx;
-        font-size: 24rpx;
-        color: #C2C2C2;
-        letter-spacing: 4rpx;
+        height: 200rpx;
+        position: absolute;
+        bottom: 0;
       }
     }
+    .tips{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .mask{
+        width:100%;
+        height:100%;
+        position:fixed;
+        background-color: #000;
+        top:0;
+        left:0;
+        opacity: 0.5;
+      }
+      .modal_div{
+        width: 67%;
+        height: 350rpx;
+        background: #fff;
+        border-radius: 16rpx;
+        z-index: 110;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .close_img{
+          width: 60rpx;
+          height: 80rpx;
+          align-self: flex-end;
+          img{
+            width: 35rpx;
+            height: 77rpx;
+            padding-right: 20rpx;
+          }
+        }
+        p{
+          font-size: 30rpx;
+          padding: 10rpx 0;
+        }
+        button{
+          width: 304rpx;
+          height: 86rpx;
+          background: #2098EE;
+          border-radius: 40rpx;
+          color: #fff;
+          font-size: 30rpx;
+          margin-top: 36rpx;
+          line-height: 86rpx;
+          &:after{
+            border: 0; 
+          }
+        }
+      }
+    }
+    // .share{
+    //   width: 92%;
+    //   height: 30%;
+    //   padding-top: 5%;
+    //   box-sizing: border-box;
+    //   .click{
+    //     width: 100%;
+    //     height: 15%;
+    //     display: flex;
+    //     flex-direction: row;
+    //     justify-content: center;
+    //     align-items: center;
+    //     .here{
+    //       font-size: 28rpx;
+    //       color: #00A0E9;
+    //       font-weight: bold;
+    //       text-decoration: underline;
+    //       letter-spacing: 4rpx;
+    //     }
+    //     .click_here {
+    //       width: 80%;
+    //       margin-top: 20rpx;
+    //       background-color: #F6FCFF;
+    //       display: flex;
+    //       flex-direction: row;
+    //       align-items: center;
+    //       justify-content: center;
+    //       &:after{
+    //         border: 0; 
+    //       }
+    //       .btnImg {
+    //         margin-left: 30rpx;
+    //         width: 40rpx;
+    //         height: 28rpx;
+    //       }
+    //       span{
+    //         font-size: 26rpx;
+    //         color: #00A0E9;
+    //         font-weight: bold;
+    //         text-decoration: underline;
+    //       }
+    //     }
+    //     .img{
+    //       width: 5%;
+    //       height: 58%;
+    //       padding-left: 4%;
+    //       img{
+    //         max-width: 100%;
+    //         max-height: 100%;
+    //       }
+    //     }
+    //   }
+    //   .focus{
+    //     width: 100%;
+    //     height: 10%;
+    //     text-align: center;
+    //     padding: 20rpx;
+    //     font-size: 24rpx;
+    //     color: #C2C2C2;
+    //     letter-spacing: 4rpx;
+    //   }
+    // }
   }
 </style>

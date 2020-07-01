@@ -21,13 +21,23 @@ export default {
             default: 'left_test'
         }
     },
+    data() {
+        return {
+            title: ''
+        }
+    },
     methods: {
         backToParent() {
             this.$emit('toggleShow', this.to)
         }
     },
-    created(){
-        
+    onLoad: function(options){
+        if(this.to === 'left_test') {
+            this.title = '左眼测量准备'
+        } else {
+            this.title = '右眼测量准备'
+        }
+        wx.setNavigationBarTitle({title: this.title});
     }
 }
 </script>
@@ -46,8 +56,8 @@ page{
     align-items: center;
     justify-content: center;
     .img{
-        width: 59%;
-        height: 49%;
+        width: 73%;
+        height: 41%;
         margin-top: 12%;
         position: relative;
         &:before{
@@ -59,8 +69,8 @@ page{
             color: #ADADAD;
         }
         img{
-            max-width: 100%;
-            max-height: 100%;
+            width: 513rpx;
+            height: 461rpx;
         }
     }
     .tips{
@@ -80,7 +90,7 @@ page{
         height: 10%;
         width: 86%;
         height: 7%;
-        border: 2rpx solid #00A0E9;
+        border: 2rpx solid #7BC1F1;
         border-radius: 50rpx;
         position: absolute;
         bottom: 7%;
