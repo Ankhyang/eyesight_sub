@@ -3,7 +3,7 @@
     <div class="header">
       <div class="img">
         <img class="img_logo" src="../../../static/images/logo.png" mode="widthFix" alt="康贝贝">
-        <img class="img_bg" src="../../../static/images/bg.png" mode="widthFix" alt="眼睛">
+        <img class="img_bg" :style="{width: sizeStyle.w+'rpx', height: sizeStyle.h+'rpx', marginLeft: sizeStyle.ml+'rpx', marginTop: sizeStyle.mt+'rpx'}" src="../../../static/images/bg.png" alt="眼睛">
       </div>
     </div>
     <div class="text">
@@ -30,14 +30,25 @@ export default {
       phoneNumber: '',
       code: '',
       session_key: '',
-      flag: true // 授权用户信息
+      flag: true, // 授权用户信息
+      sizeStyle: {w:600, h: 400, ml: -385, mt: -356},
+      imgSize: {
+        small: {w:600, h: 400, ml: -365, mt: -375},
+        middle: {w:600, h: 400, ml: -385, mt: -356},
+        max: {w:600, h: 420, ml: -428, mt: -350}
+      }
     }
   },
   computed: {
     ...mapState(['saveFlag'])
   },
+  onShow(){
+    this.flag = true;
+    // 启用按钮
+    this.setSaveFlag(false);
+  },
   methods: {
-    ...mapMutations(['setUserInfo', 'setConfig', 'setSaveFlag']),
+    ...mapMutations(['setUserInfo', 'setConfig', 'setSaveFlag', 'setNextFlag']),
     getPerson(event) {
       const detail = event.mp.detail;
       if(!this.saveFlag && detail.userInfo) {
@@ -95,11 +106,6 @@ export default {
         })
       }
     },
-    mounted(){
-      this.flag = true;
-      // 启用按钮
-      this.setSaveFlag(false);
-    },
     //  获取手机号码
     getPhoneNumber(e) {
       // 判断是否授权
@@ -148,6 +154,8 @@ export default {
       let s = this.$service.save_userInfo(d);
       s.then(res => {
         this.flag = true;
+        // 禁用下一步按钮
+        this.setNextFlag(true);
         // 跳转到身高界面
         wx.navigateTo({
           url: "/pages/height/main"
@@ -162,6 +170,22 @@ export default {
         })
       })
     }
+  },
+  created() {
+    wx.getSystemInfo({
+      success: (res) => {
+        let s = res.safeArea.width;
+        if(s >= 320 && s< 374) {
+          this.sizeStyle = this.imgSize['small']
+        } else if(s >= 375 && s< 413) {
+          this.sizeStyle = this.imgSize['middle']
+        } else if(s >= 414 && s< 450){
+          this.sizeStyle = this.imgSize['max']
+        }
+      },
+      fail: function () {
+      }
+    })
   }
 }
 </script>
@@ -188,21 +212,21 @@ export default {
       z-index: 1;
       .img_logo{
         position: absolute;
+        z-index: 3;
         top: 0;
         left: 0;
         width: 280rpx;
         height: 280rpx;
-        z-index: 3;
       }
       .img_bg{
-        width: 500rpx;
-        height: 400rpx;
         position: absolute;
+        z-index: 2; 
         top: 0;
         left: 0;
-        z-index: 2; 
-        margin-left: -345rpx;
-        margin-top: -300rpx;
+        // width: 500rpx;
+        // height: 400rpx;
+        // margin-left: -345rpx;
+        // margin-top: -300rpx;
       }
     }
   }

@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-        <div class="prepare" v-show="showPrepare">
+        <div class="prepare" v-show="preFlag">
             <prepare :to="to" @toggleShow="toggleShow"/>
         </div>
-        <div class="content_main" v-show="!showPrepare">
+        <div class="content_main" v-show="!preFlag">
             <div class="e_view" @touchend="handletouchend" @touchstart="handletouchtart">
                 <p :class="e_direction" :style="{fontSize: size+'rpx'}">E</p>
             </div>
@@ -50,7 +50,7 @@
 import prepare from '@/components/prepare'
 import util from '@/utils/utils.js'
 import config from '@/config/config.js'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
     components: { prepare },
@@ -84,12 +84,11 @@ export default {
             rowNumberData: {},
             rulerType: "bigEyeData",
             activeFlag: false,
-            showPrepare: true,
             barTitle: '左眼测量准备'
         }
     },
     computed: {
-        ...mapState(['userInfo', 'config']),
+        ...mapState(['userInfo', 'config', 'preFlag']),
         // 视图区的E方向
         e_direction: function() {
             // 根据direction返回对应的class
@@ -113,6 +112,7 @@ export default {
         }
     },
     methods:{
+        ...mapMutations(['setPreFlag']),
         // 点击小数或者五分按钮，设置类型
         setRuler(t) {
             var e, f, r = this, s = this.eRow;
@@ -167,7 +167,8 @@ export default {
                 });
                 // 切换为右眼测试
                 this.to = "right_test";
-                this.showPrepare = true;
+                // this.showPrepare = true;
+                this.setPreFlag(true);
             } else {
                 r = this.getEValue(a), t = 1;
                 this.testNumber = t,
@@ -304,7 +305,8 @@ export default {
             wx.setNavigationBarTitle({
                 title: this.barTitle
             });
-            this.showPrepare = false;
+            // 隐藏界面
+            this.setPreFlag(false);
         }
     },
     created() {
@@ -313,6 +315,42 @@ export default {
         });
     },
     onLoad() {
+        var a, i = this, r = i.eRow, s = "", o = i.directionData, n = util.getSmallEyeData(), 
+        h = util.getBigEyeData(), u = util.getE60SizeData(), l = util.getE30SizeData(), 
+        c = util.getRowNumberData(), d = wx.getStorageSync("results"),
+        g = (a = 60 === this.distance ? u : l)[r];
+        s = o[Math.floor(Math.random() * o.length + 1) - 1], 
+        this.smallEyeData = n,
+        this.bigEyeData = h,
+        this.eSizeData = a,
+        this.e60SizeData = u,
+        this.e30SizeData = l,
+        this.rowNumberData = c,
+        this.size = g,
+        this.direction = s,
+        this.eRow = r,
+        d && d[0] && (g = a[r = d[0].eRow], i.getRuler(d[0].eRow), this.eRow = r, this.size = g);
+    },
+    onShow(){
+        this.to = 'left_test'
+        this.barTitle = '左眼测量准备';
+        this.rulerType = "bigEyeData";
+        this.activeFlag = false;
+        this.eRow = 11;
+        this.eValue = "5.0";
+        this.countDownStatus =!0,
+        this.rightScore = 0,
+        this.errorScore = 0,
+        this.totalScore = 0,
+        this.rowError = 0,
+        this.rowRight = 0,
+        this.leftEye = "",
+        this.rightEye = "",
+        this.testNumber = 1,
+        this.ruler = [ "4.8", "4.9", "5.0", "5.1", "5.2"];
+        wx.setNavigationBarTitle({
+            title: this.barTitle
+        });
         var a, i = this, r = i.eRow, s = "", o = i.directionData, n = util.getSmallEyeData(), 
         h = util.getBigEyeData(), u = util.getE60SizeData(), l = util.getE30SizeData(), 
         c = util.getRowNumberData(), d = wx.getStorageSync("results"),

@@ -15,65 +15,10 @@ export default {
     
   },
   mounted() {
-    // var that = this, e = wx.getStorageSync("baidu_token") || {};
-    // e && e.time - Date.now() <= 3e5 && this.sysBaiduOpenApiToken();
-    // setTimeout(() => {
-    //     wx.setStorageSync("baidu_token", e), this.sysBaiduOpenApiToken();
-    // }, 5);
     wx.setStorageSync("results", null)
-    // wx.getStorageSync("userId") || "" || wx.login({
-    //   success: function(e) { 
-    //     console.log('wx.login', e)
-    //     wx.request({
-    //       url: config.staticUrl + `/api/v1/users/get/${token}`,
-    //       data: {
-    //           code: e.code
-    //       },
-    //       success: function(e) {
-    //           if ("10000" == e.data.code) {
-    //               wx.setStorageSync("userId", e.data.data.userId);
-    //           } else "20000" == e.data.code || console.log("接口用户信息获取失败");
-    //       }
-    //     });
-    //   }
-    // });
-    // 获取机型
-    wx.getSystemInfo({
-      success(res) {
-        let f = res.model === "iPhone X" ? true : false;
-        wx.setStorageSync("isIphoneX", f)
-      }
-    })
   },
   methods: {
-    sysBaiduOpenApiToken() {
-      Date.now();
-      var e = wx.getStorageSync("baidu_token") || {};
-      e.time ? e.time - Date.now() <= 3e5 && this.getBaiduOpenApiToken(function(e) {
-          e.time = Date.now() + 72e5, wx.setStorageSync("baidu_token", e);
-      }) : this.getBaiduOpenApiToken(function(e) {
-          e.time = Date.now() + 72e5, wx.setStorageSync("baidu_token", e);
-      });
-    },
-    getBaiduOpenApiToken(e) {
-      wx.request({
-        url: "https://openapi.baidu.com/oauth/2.0/token",
-        data: {
-            grant_type: "client_credentials",
-            client_id: "lagZdrinq7W8AAec6NDmcq18BSPC7ZUg",
-            client_secret: "eY2vLcfI5yu1YhGnxwlimu7kojLLtGVz"
-        },
-        header: {
-            "Content-Type": "application/json"
-        },
-        success: function(t) {
-            "function" == typeof e && e(t.data);
-        },
-        fail: function(e) {
-            console.log(e);
-        }
-      });
-    }
+    
   }
 }
 </script>

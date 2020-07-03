@@ -18,7 +18,7 @@ export default {
     methods:{
         ...mapMutations(['setNextFlag'])
     },
-    mounted() {
+    onShow() {
         // 启用下一步按钮
         this.setNextFlag(false);
     },

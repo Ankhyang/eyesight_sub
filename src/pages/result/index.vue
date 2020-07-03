@@ -11,7 +11,7 @@
         <div class="circle_3">
           <p class="sight">左眼视力</p>
           <p class="num">{{leftEye}}</p>
-          <p class="small">5.0</p>
+          <p class="small">{{leftEyeSub}}</p>
         </div>
       </div>
       <div class="circle">
@@ -20,7 +20,7 @@
         <div class="circle_3">
           <p class="sight">右眼视力</p>
           <p class="num">{{rightEye}}</p>
-          <p class="small">5.0</p>
+          <p class="small">{{rightEyeSub}}</p>
         </div>
       </div>
     </div>
@@ -34,15 +34,6 @@
     <div class="img">
       <img src="../../../static/images/bg.png" alt="眼睛">
     </div>
-    <!-- <div class="share">
-      <div class="click">
-        <button class="click_here" open-type="contact" @contact="reply">
-          <span>点击这里</span>
-          <img class="btnImg" src="../../../static/images/click_here.png" alt="点击这里">
-        </button>
-      </div>
-      <p class="focus">关注公众号“了解护眼方法大全”</p> 
-    </div> -->
     <div class="share">
       <div class="share_more">
         <img class="finger" src="../../../static/images/finger.png" alt="手指">
@@ -68,18 +59,36 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
     data() {
         return {
             leftEye: '',
+            leftEyeSub:'',
             rightEye: '',
+            rightEyeSub:'',
             shareImage: '',
             painting: {},
             resultStatus: !1,
             results: [],
             userInfo: {},
-            showTipsFlag: false
+            showTipsFlag: false,
+            arr: [
+              {sm: '0.1', big: '4.0'},
+              {sm: '0.12', big: '4.1'},
+              {sm: '0.15', big: '4.2'},
+              {sm: '0.2', big: '4.3'},
+              {sm: '0.25', big: '4.4'},
+              {sm: '0.3', big: '4.5'},
+              {sm: '0.4', big: '4.6'},
+              {sm: '0.5', big: '4.7'},
+              {sm: '0.6', big: '4.8'},
+              {sm: '0.8', big: '4.9'},
+              {sm: '1.0', big: '5.0'},
+              {sm: '1.2', big: '5.1'},
+              {sm: '1.5', big: '5.2'},
+              {sm: '2.0', big: '5.3'}
+            ]
         }
     },
     computed: {
@@ -91,10 +100,27 @@ export default {
       // s.unshift(q), wx.setStorageSync("results", s), this.leftEye = q.leftEye,
       // this.rightEye = q.rightEye, this.results = s;
       this.leftEye = q.leftEye;
+      this.leftEyeSub = this.getEyesightSub(q.leftEye);
       this.rightEye = q.rightEye;
+      this.rightEyeSub = this.getEyesightSub(q.rightEye);
       this.userInfo = wx.getStorageSync('userInfo');
     },
     methods: {
+      ...mapMutations(['setPreFlag']),
+      getEyesightSub(eye){
+        let s, a = this.arr;
+        for(var i in a) {
+          let c = Object.values(a[i]);
+          if(c[0]*1 === eye*1) {
+            s = c[1];
+            break;
+          } else if(c[1]*1 === eye*1) {
+            s = c[0];
+            break;
+          } 
+        }
+        return s;
+      },
       eventGetImage (event) {
         wx.hideLoading();
         this.shareImage = event.target.tempFilePath;
@@ -321,6 +347,10 @@ export default {
         title: "康贝贝测视力",
         path: "/pages/index/main"
       };
+    },
+    onShow() {
+      // 显示准备界面
+      this.setPreFlag(true);
     }
 }
 </script>
@@ -370,7 +400,7 @@ export default {
       box-shadow: 4rpx 5rpx 16rpx #6BCEFF;
       .circle{
         width: 50%;
-        height: 100%;
+        height: 400rpx;
         display: flex;
         flex-direction: row;
         justify-content: center;

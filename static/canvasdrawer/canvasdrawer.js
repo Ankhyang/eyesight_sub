@@ -68,7 +68,6 @@ Component({
     downLoadImages (index) {
       const { imageList, tempFileList } = this.data
       if (index < imageList.length) {
-        // console.log(imageList[index])
         this.getImageInfo(imageList[index]).then(file => {
           tempFileList.push(file)
           this.setData({
@@ -204,7 +203,6 @@ Component({
     },
     drawRect (params) {
       this.ctx.save()
-      // console.log(params)
       const { background, top = 0, left = 0, width = 0, height = 0, borderRadius = 0 } = params
       if (borderRadius) {
         // this.ctx.setGlobalAlpha(0);
