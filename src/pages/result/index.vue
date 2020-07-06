@@ -454,7 +454,7 @@ export default {
     .btn_arr{
       width: 100%;
       height: 15%;
-      z-index: 4;
+      // z-index: 4;
       display: flex;
       flex-direction: row;
       justify-content: space-around;
@@ -466,7 +466,7 @@ export default {
         border-radius: 50rpx;
         font-size: 30rpx;
         color: #00A0E9;
-        background: #fff;
+        background: #F6FCFF;
         display: flex;
         align-items: center;
         justify-content: center;

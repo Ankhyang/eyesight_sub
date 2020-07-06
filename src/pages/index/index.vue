@@ -31,11 +31,11 @@ export default {
       code: '',
       session_key: '',
       flag: true, // 授权用户信息
-      sizeStyle: {w:600, h: 400, ml: -385, mt: -356},
+      sizeStyle: {w:600, h: 400, ml: -475, mt: -306},
       imgSize: {
-        small: {w:600, h: 400, ml: -365, mt: -375},
-        middle: {w:600, h: 400, ml: -385, mt: -356},
-        max: {w:600, h: 420, ml: -428, mt: -350}
+        small: {w:600, h: 400, ml: -445, mt: -325},
+        middle: {w:600, h: 400, ml: -475, mt: -306},
+        max: {w:600, h: 420, ml: -455, mt: -330}
       }
     }
   },
