@@ -215,8 +215,8 @@ export default {
         z-index: 3;
         top: 0;
         left: 0;
-        width: 280rpx;
-        height: 280rpx;
+        width: 266rpx;
+        height: 260rpx;
       }
       .img_bg{
         position: absolute;
