@@ -29,7 +29,7 @@
                 </picker-view>
             </div>
             <div class="img">
-                <img src="../../../static/images/ruler.png" alt="尺子">
+                <img src="../../../static/images/ruler2.png" alt="尺子">
             </div>
         </div>
         <div class="height">
@@ -195,16 +195,16 @@ export default {
             left: -31%;
             top:-46rpx;
             z-index: 1;
-            &:before{
-                position: absolute;
-                top: 327rpx;
-                content: '';
-                width: 35rpx;
-                height: 8rpx;
-                background: #00A0E9;
-                border-top-right-radius: 6rpx;
-                border-bottom-right-radius: 6rpx;
-            }
+            // &:before{
+            //     position: absolute;
+            //     top: 327rpx;
+            //     content: '';
+            //     width: 35rpx;
+            //     height: 8rpx;
+            //     background: #00A0E9;
+            //     border-top-right-radius: 6rpx;
+            //     border-bottom-right-radius: 6rpx;
+            // }
             img{
                 width: 55rpx;
                 height: 650rpx;

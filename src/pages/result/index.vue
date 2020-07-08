@@ -135,7 +135,7 @@ export default {
           let user = this.userInfo;
           this.painting = {
             width: 390,
-            height: 800,
+            height: 720,
             clear: true,
             views: [
               {
@@ -185,9 +185,17 @@ export default {
               },
               {
                 type: 'image',
+                url: '/static/images/bg.png',
+                top: 275,
+                left: -209,
+                width: 360,
+                height: 270
+              },
+              {
+                type: 'image',
                 url: '/static/images/sight_view.png',
                 top: 180,
-                left: 9,
+                left: 12,
                 width: 360,
                 height: 200
               },
@@ -219,7 +227,7 @@ export default {
               },
               {
                 type: 'text',
-                content: '5.0',
+                content: this.leftEyeSub,
                 fontSize: 12,
                 color: '#424242',
                 textAlign: 'left',
@@ -254,7 +262,7 @@ export default {
               },
               {
                 type: 'text',
-                content: '5.0',
+                content: this.rightEyeSub,
                 fontSize: 12,
                 color: '#424242',
                 textAlign: 'left',
@@ -264,20 +272,19 @@ export default {
               {
                 type: 'image',
                 url: '/static/images/qr_code.png',
-                top: 410,
+                top: 460,
                 left: 130,
                 width: 120,
                 height: 120
               },
               {
                 type: 'text',
-                content: '关注公众号，了解护眼方法大全',
-                fontSize: 13,
+                content: '关 注 公 众 号，了 解 护 眼 方 法 大 全',
+                fontSize: 12,
                 color: '#9E9E9E',
                 textAlign: 'left',
-                top: 550,
-                left: 95,
-                bolder: true
+                top: 610,
+                left: 80
               }
             ]
           }
@@ -454,7 +461,7 @@ export default {
     .btn_arr{
       width: 100%;
       height: 15%;
-      // z-index: 4;
+      z-index: 4;
       display: flex;
       flex-direction: row;
       justify-content: space-around;
@@ -466,7 +473,7 @@ export default {
         border-radius: 50rpx;
         font-size: 30rpx;
         color: #00A0E9;
-        background: #F6FCFF;
+        background: transparent;
         display: flex;
         align-items: center;
         justify-content: center;
