@@ -4,7 +4,7 @@
             <prepare :to="to" @toggleShow="toggleShow"/>
         </div>
         <div class="content_main" v-show="!preFlag">
-            <div class="e_view" @touchend="handletouchend" @touchstart="handletouchtart">
+            <div class="e_view">
                 <p :class="e_direction" :style="{fontSize: size+'rpx'}">E</p>
             </div>
             <div class="type">
@@ -61,8 +61,8 @@ export default {
             directionData: [ "up", "right", "down", "left"],
             lastX: 0,
             lastY: 0,
-            eRow: 11,
-            eValue: "5.0",
+            eRow: 5,
+            eValue: "4.4",
             direction: "",
             size: "",
             countDownStatus: !0,
@@ -76,7 +76,7 @@ export default {
             testNumber: 1,
             eSizeData: '',
             distance: "",
-            ruler: [ "4.8", "4.9", "5.0", "5.1", "5.2"],
+            ruler: [ "4.2", "4.3", "4.4", "4.5", "4.6"],
             smallEyeData: {},
             bigEyeData: {},
             e60SizeData: {},
@@ -258,16 +258,16 @@ export default {
             }
         },
         // 触摸视图区域之前
-        handletouchtart(t) {
-            this.lastX = t.touches[0].pageX;
-            this.lastY = t.touches[0].pageY;
-        },
-        // 触摸视图区域之后
-        handletouchend(t) {
-            var e, a = t.changedTouches[0].pageX, i = t.changedTouches[0].pageY, r = a - this.lastX, s = i - this.lastY;
-            Math.abs(r) > Math.abs(s) ? r < 0 ? e = this.directionData[3] : r > 0 && (e = this.directionData[1]) : s < 0 ? e = this.directionData[0] : s > 0 && (e = this.directionData[2]), 
-            this.lastX = a, this.lastY = i, this.checkTesting(e);
-        },
+        // handletouchtart(t) {
+        //     this.lastX = t.touches[0].pageX;
+        //     this.lastY = t.touches[0].pageY;
+        // },
+        // // 触摸视图区域之后
+        // handletouchend(t) {
+        //     var e, a = t.changedTouches[0].pageX, i = t.changedTouches[0].pageY, r = a - this.lastX, s = i - this.lastY;
+        //     Math.abs(r) > Math.abs(s) ? r < 0 ? e = this.directionData[3] : r > 0 && (e = this.directionData[1]) : s < 0 ? e = this.directionData[0] : s > 0 && (e = this.directionData[2]), 
+        //     this.lastX = a, this.lastY = i, this.checkTesting(e);
+        // },
         // 结束后跳转到结果页面
         showResult(t, e, a, i){
             wx.navigateTo({ 
@@ -280,10 +280,11 @@ export default {
                 this.barTitle = '当前测量【左眼】';
                 this.to = 'right_test';
             } else {
+                let u = util.getE60SizeData(), l = util.getE30SizeData();
                 this.barTitle = '当前测量【右眼】';
                 this.to = 'left_test';
-                this.eRow = 11;
-                this.size = 8;
+                this.eRow = 5;
+                this.size = (60 === this.distance ? u : l)[this.eRow];
                 if(this.rulerType === 'smallEyeData') {
                     this.ruler = ['0.6', '0.8', '1.0', '1.2', '1.5']
                     this.eValue = "1.0";
@@ -293,8 +294,8 @@ export default {
                         }
                     }); 
                 } else {
-                    this.ruler = [ "4.8", "4.9", "5.0", "5.1", "5.2"]
-                    this.eValue = "5.0";
+                    this.ruler = [ "4.2", "4.3", "4.4", "4.5", "4.6"]
+                    this.eValue = "4.4";
                     this.setRuler({
                         currentTarget: {
                             id: 'five_mark'
@@ -336,8 +337,8 @@ export default {
         this.barTitle = '左眼测量准备';
         this.rulerType = "bigEyeData";
         this.activeFlag = false;
-        this.eRow = 11;
-        this.eValue = "5.0";
+        this.eRow = 5;
+        this.eValue = "4.4";
         this.countDownStatus =!0,
         this.rightScore = 0,
         this.errorScore = 0,
@@ -347,7 +348,7 @@ export default {
         this.leftEye = "",
         this.rightEye = "",
         this.testNumber = 1,
-        this.ruler = [ "4.8", "4.9", "5.0", "5.1", "5.2"];
+        this.ruler = [ "4.2", "4.3", "4.4", "4.5", "4.6"];
         wx.setNavigationBarTitle({
             title: this.barTitle
         });
@@ -406,7 +407,7 @@ export default {
          .e_view{
             width: 92%;
             height: 33%;
-            margin: 25rpx;
+            margin: 25rpx auto;
             box-sizing: border-box;
             display: flex;
             justify-content: center;

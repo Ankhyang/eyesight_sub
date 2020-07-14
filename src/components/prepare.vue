@@ -54,11 +54,11 @@ page{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
     .img{
         width: 73%;
         height: 41%;
-        margin-top: 12%;
+        margin-top: 140rpx;
         position: relative;
         &:before{
             content: '手臂伸直';
@@ -76,20 +76,21 @@ page{
     .tips{
         height: 15%;
         margin-bottom: 12%;
+        margin-top: 111.07rpx;
         .hide{
             font-weight: bold;
             text-align: center;
             padding-bottom: 20rpx;
         }
         .direction{
-            font-size: 26rpx;
+            font-size: 27rpx;
             color: #666;
         }
     }
     .btn{
         height: 10%;
         width: 86%;
-        height: 7%;
+        height: 102rpx;
         border: 2rpx solid #7BC1F1;
         border-radius: 50rpx;
         position: absolute;

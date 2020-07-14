@@ -271,7 +271,7 @@ export default {
               },
               {
                 type: 'image',
-                url: '/static/images/qr_code.png',
+                url: '/static/images/qr_code1.jpeg',
                 top: 460,
                 left: 130,
                 width: 120,
@@ -467,11 +467,11 @@ export default {
       justify-content: space-around;
       align-items: center;
       .btn{
-        width: 40%;
-        height: 45%;
+        width: 274rpx;
+        height: 78rpx;
         border: 2rpx solid #52C8FF;
         border-radius: 50rpx;
-        font-size: 30rpx;
+        font-size: 27rpx;
         color: #00A0E9;
         background: transparent;
         display: flex;

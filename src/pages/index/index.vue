@@ -2,7 +2,7 @@
   <div class="main">
     <div class="header">
       <div class="img">
-        <img class="img_logo" src="../../../static/images/logo.png" mode="widthFix" alt="康贝贝">
+        <img class="img_logo" src="../../../static/images/logo1.png" mode="widthFix" alt="康贝贝">
         <img class="img_bg" :style="{width: sizeStyle.w+'rpx', height: sizeStyle.h+'rpx', marginLeft: sizeStyle.ml+'rpx', marginTop: sizeStyle.mt+'rpx'}" src="../../../static/images/bg.png" alt="眼睛">
       </div>
     </div>
@@ -244,7 +244,7 @@ export default {
   .footer{
     height: 12%;
     width: 84%;
-    height: 8%;
+    height: 102rpx;
     overflow: hidden;
     border: 1rpx solid #7BC1F1;
     border-radius: 50rpx;

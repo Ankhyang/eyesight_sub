@@ -252,7 +252,7 @@ export default {
     }
     .next{
         width: 90%;
-        height: 90rpx;
+        height: 102rpx;
         overflow: hidden;
         border-radius: 50rpx;
         position: absolute;
@@ -264,8 +264,8 @@ export default {
         .btn{
             background: #fff;
             width: 100%;
-            height: 90rpx;
-            line-height: 90rpx;
+            height: 102rpx;
+            line-height: 102rpx;
             color: #00A0E9;
             font-weight: normal;
             font-size: 30rpx;
