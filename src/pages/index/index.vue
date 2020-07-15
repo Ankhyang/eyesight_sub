@@ -5,13 +5,14 @@
         <img class="img_logo" src="../../../static/images/logo1.png" mode="widthFix" alt="康贝贝">
         <img class="img_bg" :style="{width: sizeStyle.w+'rpx', height: sizeStyle.h+'rpx', marginLeft: sizeStyle.ml+'rpx', marginTop: sizeStyle.mt+'rpx'}" src="../../../static/images/bg.png" alt="眼睛">
       </div>
+      <p>视力检测工具</p>
     </div>
     <div class="text">
-      <p>康贝贝测视力</p>
+      
     </div>    
     <div class="footer">
       <button class="btn" v-show="flag" open-type="getUserInfo" @getuserinfo="getPerson" :disabled="saveFlag">
-        进入康贝贝～
+        进入～
       </button>
       <button class="btn" v-show="!flag" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" :disabled="saveFlag">
         授权
@@ -206,38 +207,33 @@ export default {
     justify-content: center;
     align-items: center;
     .img{
-      width: 280rpx;
-      height: 280rpx;
+      width: 420rpx;
+      height: 420rpx;
       position: relative;
       z-index: 1;
       .img_logo{
         position: absolute;
         z-index: 3;
-        top: 0;
+        top: 20rpx;
         left: 0;
-        width: 266rpx;
-        height: 260rpx;
+        width: 420rpx;
+        height: 420rpx;
       }
       .img_bg{
         position: absolute;
         z-index: 2; 
         top: 0;
         left: 0;
-        // width: 500rpx;
-        // height: 400rpx;
-        // margin-left: -345rpx;
-        // margin-top: -300rpx;
       }
     }
-  }
-  .text{
-    height: 31%;
-    text-align: center;
-    color: #A5A5A7;
-    font-size: 25rpx;
-    padding-top: 70rpx;
     p{
-      letter-spacing: 16rpx;
+      width: 420rpx;
+      text-align: center;
+      color: #A5A5A7;
+      text-indent: 14rpx;
+      text-align: center;
+      font-size: 25rpx;
+      letter-spacing: 14rpx;
       font-family:Arial, Helvetica, sans-serif;
     }
   }

@@ -48,7 +48,7 @@
           <img @click="close" src="../../../static/images/fork.png" alt="关闭">
         </div>
         <p>在客服对话中回复数字1</p>
-        <p>关注【康贝贝】</p>
+        <p>关注【康贝贝博士】</p>
         <button class="click_here" open-type="contact" @click="go">
           去关注
         </button>
@@ -69,8 +69,6 @@ export default {
             rightEyeSub:'',
             shareImage: '',
             painting: {},
-            resultStatus: !1,
-            results: [],
             userInfo: {},
             showTipsFlag: false,
             arr: [
@@ -95,10 +93,6 @@ export default {
       ...mapState(['config'])
     },
     onLoad(q) {
-      // var e = this, s = wx.getStorageSync("results") || [];
-      // s.length > 1 && s.pop(), s.length >= 4 && (this.resultStatus = !0), 
-      // s.unshift(q), wx.setStorageSync("results", s), this.leftEye = q.leftEye,
-      // this.rightEye = q.rightEye, this.results = s;
       this.leftEye = q.leftEye;
       this.leftEyeSub = this.getEyesightSub(q.leftEye);
       this.rightEye = q.rightEye;
@@ -149,16 +143,16 @@ export default {
               {
                 type: 'text',
                 content: '视力测量结果',
-                fontSize: 20,
+                fontSize: 21,
                 color: '#00A0E9',
                 textAlign: 'left',
-                top: 20,
+                top: 40,
                 left: 20
               },
               {
                 type: 'image',
                 url: user.avatarUrl,
-                top: 70,
+                top: 115,
                 left: 35,
                 width: 55,
                 height: 55
@@ -166,7 +160,7 @@ export default {
               {
                 type: 'image',
                 url: '/static/images/white.png',
-                top: 70,
+                top: 115,
                 left: 35,
                 width: 55,
                 height: 55
@@ -177,8 +171,8 @@ export default {
                 fontSize: 18,
                 color: '#00A0E9',
                 textAlign: 'left',
-                top: 90,
-                left: 260,
+                top: 130,
+                left: 265,
                 bolder: true,
                 breakWord: true,
                 MaxLineNumber: 2
@@ -195,7 +189,7 @@ export default {
                 type: 'image',
                 url: '/static/images/sight_view.png',
                 top: 180,
-                left: 12,
+                left: 15,
                 width: 360,
                 height: 200
               },
@@ -279,12 +273,12 @@ export default {
               },
               {
                 type: 'text',
-                content: '关 注 公 众 号，了 解 护 眼 方 法 大 全',
+                content: '关 注 公 众 号，了 解 更 多 护 眼 方 法 大 全',
                 fontSize: 12,
                 color: '#9E9E9E',
                 textAlign: 'left',
                 top: 610,
-                left: 80
+                left: 75
               }
             ]
           }
@@ -358,6 +352,8 @@ export default {
     onShow() {
       // 显示准备界面
       this.setPreFlag(true);
+      this.shareImage = '';
+      this.painting = {};
     }
 }
 </script>

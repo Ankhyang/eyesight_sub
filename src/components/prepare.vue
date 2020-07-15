@@ -54,7 +54,6 @@ page{
     display: flex;
     flex-direction: column;
     align-items: center;
-    // justify-content: center;
     .img{
         width: 73%;
         height: 41%;
@@ -65,7 +64,7 @@ page{
             position: absolute;
             top: 22%;
             left: 15%;
-            font-size: 27rpx;
+            font-size: 28rpx;
             color: #ADADAD;
         }
         img{
@@ -81,9 +80,10 @@ page{
             font-weight: bold;
             text-align: center;
             padding-bottom: 20rpx;
+            font-size: 36rpx;
         }
         .direction{
-            font-size: 27rpx;
+            font-size: 30rpx;
             color: #666;
         }
     }

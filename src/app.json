@@ -2,13 +2,13 @@
   "pages": [
     "pages/index/main",
     "pages/left_test/main",
-    "pages/result/main",
-    "pages/height/main"
+    "pages/height/main",
+    "pages/result/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "康贝贝",
+    "navigationBarTitleText": "康贝贝博士",
     "navigationBarTextStyle": "black" 
   }
 }

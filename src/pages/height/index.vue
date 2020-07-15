@@ -33,7 +33,8 @@
             </div>
         </div>
         <div class="height">
-            <p class="tell">偷偷告诉你，真实的身高视力测试才会准哦～</p>
+            <p class="tell">偷偷告诉你，真实的身高</p>
+            <p class="tell">视力测试才会准哦～</p>
             <div class="height_num">
                 <div class="img">
                     <img src="../../../static/images/height_input.png" alt="">
@@ -167,7 +168,7 @@ export default {
     .bg{
         width: 45%;
         height: 50%;
-        margin-top: 36%;
+        margin-top: 40%;
         margin-right: 16%;
         img{
             height: 604rpx;
@@ -179,7 +180,7 @@ export default {
         height: 600rpx;
         position: absolute;
         z-index: 0;
-        right: 4%;
+        right: 0;
         top: 12%;
         .choose{
             width: 100%;
@@ -219,7 +220,7 @@ export default {
         top: 10%;
         left: 2%;
         .tell{
-            height: 80rpx;
+            height: 40rpx;
             width: 300rpx;
             text-align: center;
             font-size: 25rpx;
@@ -229,23 +230,20 @@ export default {
             position: relative;
             width: 300rpx;
             height: 150rpx;
-            .img{
-                width: 80%;
-                height: 75%;
-                img{
-                    max-width: 100%;
-                    max-height: 100%;
-                }
+            img{
+                width: 276rpx;
+                height: 120rpx;
             }
             .num{
                 position: absolute;
                 top: 34rpx;
                 left: 70rpx;
-                font-size: 37rpx;
+                font-size: 42rpx;
                 color: #00A0E9;
                 span{
-                    padding-left: 8rpx;
-                    font-size: 21rpx;
+                    padding-left: 14rpx;
+                    font-size: 24rpx;
+                    font-weight: normal;
                 }
             }
         }
@@ -262,7 +260,7 @@ export default {
         align-items: center;
         justify-content: center;
         .btn{
-            background: #fff;
+            background: transparent;
             width: 100%;
             height: 102rpx;
             line-height: 102rpx;
