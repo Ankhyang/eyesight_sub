@@ -3,13 +3,10 @@
     <div class="header">
       <div class="img">
         <img class="img_logo" src="../../../static/images/logo1.png" mode="widthFix" alt="康贝贝">
+        <p>视力检测工具</p>
         <img class="img_bg" :style="{width: sizeStyle.w+'rpx', height: sizeStyle.h+'rpx', marginLeft: sizeStyle.ml+'rpx', marginTop: sizeStyle.mt+'rpx'}" src="../../../static/images/bg.png" alt="眼睛">
       </div>
-      <p>视力检测工具</p>
-    </div>
-    <div class="text">
-      
-    </div>    
+    </div>   
     <div class="footer">
       <button class="btn" v-show="flag" open-type="getUserInfo" @getuserinfo="getPerson" :disabled="saveFlag">
         进入～
@@ -201,21 +198,22 @@ export default {
   align-items: center;
   .header{
     width: 100%;
-    height: 55%;
+    height: 80%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
     align-items: center;
     .img{
       width: 420rpx;
       height: 420rpx;
+      margin-top: 38%;
       position: relative;
       z-index: 1;
       .img_logo{
         position: absolute;
         z-index: 3;
-        top: 20rpx;
-        left: 0;
+        // top: 20rpx;
+        // left: 0;
         width: 420rpx;
         height: 420rpx;
       }
@@ -224,6 +222,10 @@ export default {
         z-index: 2; 
         top: 0;
         left: 0;
+      }
+      p{
+        position: absolute;
+        bottom: 0;
       }
     }
     p{
@@ -238,7 +240,6 @@ export default {
     }
   }
   .footer{
-    height: 12%;
     width: 84%;
     height: 102rpx;
     overflow: hidden;

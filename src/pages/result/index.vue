@@ -171,7 +171,7 @@ export default {
                 fontSize: 18,
                 color: '#00A0E9',
                 textAlign: 'left',
-                top: 130,
+                top: 132,
                 left: 265,
                 bolder: true,
                 breakWord: true,
@@ -232,7 +232,7 @@ export default {
                 type: 'image',
                 url: '/static/images/circle.png',
                 top: 210,
-                left: 203,
+                left: 213,
                 width: 140,
                 height: 140
               },
@@ -243,7 +243,7 @@ export default {
                 color: '#9E9E9E',
                 textAlign: 'left',
                 top: 250,
-                left: 250,
+                left: 260,
               },
               {
                 type: 'text',
@@ -252,7 +252,7 @@ export default {
                 color: '#00A0E9',
                 textAlign: 'left',
                 top: 270,
-                left: 250,
+                left: 260,
               },
               {
                 type: 'text',
@@ -261,7 +261,7 @@ export default {
                 color: '#424242',
                 textAlign: 'left',
                 top: 310,
-                left: 267,
+                left: 277,
               },
               {
                 type: 'image',
