@@ -98,6 +98,10 @@ export default {
       this.rightEye = q.rightEye;
       this.rightEyeSub = this.getEyesightSub(q.rightEye);
       this.userInfo = wx.getStorageSync('userInfo');
+      wx.showShareMenu({
+        withShareTicket: true,
+        menus: ['shareAppMessage', 'shareTimeline']
+      })
     },
     methods: {
       ...mapMutations(['setPreFlag']),
@@ -127,160 +131,318 @@ export default {
             mask: true
           })
           let user = this.userInfo;
-          this.painting = {
-            width: 390,
-            height: 720,
-            clear: true,
-            views: [
-              {
-                type: 'rect',
-                background: '#F6FCFF',
-                top: 0,
-                left: 0,
-                width: 390,
-                height: 800
-              },
-              {
-                type: 'text',
-                content: '视力测量结果',
-                fontSize: 21,
-                color: '#00A0E9',
-                textAlign: 'left',
-                top: 40,
-                left: 20
-              },
-              {
-                type: 'image',
-                url: user.avatarUrl,
-                top: 115,
-                left: 35,
-                width: 55,
-                height: 55
-              },
-              {
-                type: 'image',
-                url: '/static/images/white.png',
-                top: 115,
-                left: 35,
-                width: 55,
-                height: 55
-              },
-              {
-                type: 'text',
-                content: user.nickName,
-                fontSize: 18,
-                color: '#00A0E9',
-                textAlign: 'left',
-                top: 132,
-                left: 265,
-                bolder: true,
-                breakWord: true,
-                MaxLineNumber: 2
-              },
-              {
-                type: 'image',
-                url: '/static/images/bg.png',
-                top: 275,
-                left: -209,
-                width: 360,
-                height: 270
-              },
-              {
-                type: 'image',
-                url: '/static/images/sight_view.png',
-                top: 180,
-                left: 15,
-                width: 360,
-                height: 200
-              },
-              {
-                type: 'image',
-                url: '/static/images/circle.png',
-                top: 210,
-                left: 33,
-                width: 140,
-                height: 140
-              },
-              {
-                type: 'text',
-                content: '左眼视力',
-                fontSize: 12,
-                color: '#9E9E9E',
-                textAlign: 'left',
-                top: 250,
-                left: 80,
-              },
-              {
-                type: 'text',
-                content: this.leftEye,
-                fontSize: 34,
-                color: '#00A0E9',
-                textAlign: 'left',
-                top: 270,
-                left: 80,
-              },
-              {
-                type: 'text',
-                content: this.leftEyeSub,
-                fontSize: 12,
-                color: '#424242',
-                textAlign: 'left',
-                top: 310,
-                left: 95,
-              },
-              {
-                type: 'image',
-                url: '/static/images/circle.png',
-                top: 210,
-                left: 213,
-                width: 140,
-                height: 140
-              },
-              {
-                type: 'text',
-                content: '右眼视力',
-                fontSize: 12,
-                color: '#9E9E9E',
-                textAlign: 'left',
-                top: 250,
-                left: 260,
-              },
-              {
-                type: 'text',
-                content: this.rightEye,
-                fontSize: 34,
-                color: '#00A0E9',
-                textAlign: 'left',
-                top: 270,
-                left: 260,
-              },
-              {
-                type: 'text',
-                content: this.rightEyeSub,
-                fontSize: 12,
-                color: '#424242',
-                textAlign: 'left',
-                top: 310,
-                left: 277,
-              },
-              {
-                type: 'image',
-                url: '/static/images/qr_code1.jpeg',
-                top: 460,
-                left: 130,
-                width: 120,
-                height: 120
-              },
-              {
-                type: 'text',
-                content: '关 注 公 众 号，了 解 更 多 护 眼 方 法 大 全',
-                fontSize: 12,
-                color: '#9E9E9E',
-                textAlign: 'left',
-                top: 610,
-                left: 75
-              }
-            ]
+          if(user.nickName && user.avatarUrl) {
+            this.painting = {
+              width: 390,
+              height: 720,
+              clear: true,
+              views: [
+                {
+                  type: 'rect',
+                  background: '#F6FCFF',
+                  top: 0,
+                  left: 0,
+                  width: 390,
+                  height: 800
+                },
+                {
+                  type: 'text',
+                  content: '视力测量结果',
+                  fontSize: 21,
+                  color: '#00A0E9',
+                  textAlign: 'left',
+                  top: 40,
+                  left: 20
+                },
+                {
+                  type: 'image',
+                  url: user.avatarUrl,
+                  top: 115,
+                  left: 35,
+                  width: 55,
+                  height: 55
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/white.png',
+                  top: 115,
+                  left: 35,
+                  width: 55,
+                  height: 55
+                },
+                {
+                  type: 'text',
+                  content: user.nickName,
+                  fontSize: 18,
+                  color: '#00A0E9',
+                  textAlign: 'left',
+                  top: 132,
+                  left: 265,
+                  bolder: true,
+                  breakWord: true,
+                  MaxLineNumber: 2
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/bg.png',
+                  top: 275,
+                  left: -209,
+                  width: 360,
+                  height: 270
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/sight_view.png',
+                  top: 180,
+                  left: 15,
+                  width: 360,
+                  height: 200
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/circle.png',
+                  top: 210,
+                  left: 33,
+                  width: 140,
+                  height: 140
+                },
+                {
+                  type: 'text',
+                  content: '左眼视力',
+                  fontSize: 12,
+                  color: '#9E9E9E',
+                  textAlign: 'left',
+                  top: 250,
+                  left: 80,
+                },
+                {
+                  type: 'text',
+                  content: this.leftEye,
+                  fontSize: 34,
+                  color: '#00A0E9',
+                  textAlign: 'left',
+                  top: 270,
+                  left: 80,
+                },
+                {
+                  type: 'text',
+                  content: this.leftEyeSub,
+                  fontSize: 12,
+                  color: '#424242',
+                  textAlign: 'left',
+                  top: 310,
+                  left: 95,
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/circle.png',
+                  top: 210,
+                  left: 213,
+                  width: 140,
+                  height: 140
+                },
+                {
+                  type: 'text',
+                  content: '右眼视力',
+                  fontSize: 12,
+                  color: '#9E9E9E',
+                  textAlign: 'left',
+                  top: 250,
+                  left: 260,
+                },
+                {
+                  type: 'text',
+                  content: this.rightEye,
+                  fontSize: 34,
+                  color: '#00A0E9',
+                  textAlign: 'left',
+                  top: 270,
+                  left: 260,
+                },
+                {
+                  type: 'text',
+                  content: this.rightEyeSub,
+                  fontSize: 12,
+                  color: '#424242',
+                  textAlign: 'left',
+                  top: 310,
+                  left: 277,
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/qr_code1.jpeg',
+                  top: 460,
+                  left: 130,
+                  width: 120,
+                  height: 120
+                },
+                {
+                  type: 'text',
+                  content: '关 注 公 众 号，了 解 更 多 护 眼 方 法 大 全',
+                  fontSize: 12,
+                  color: '#9E9E9E',
+                  textAlign: 'left',
+                  top: 610,
+                  left: 75
+                }
+              ]
+            }
+          } else {
+            this.painting = {
+              width: 390,
+              height: 720,
+              clear: true,
+              views: [
+                {
+                  type: 'rect',
+                  background: '#F6FCFF',
+                  top: 0,
+                  left: 0,
+                  width: 390,
+                  height: 800
+                },
+                {
+                  type: 'text',
+                  content: '视力测量结果',
+                  fontSize: 21,
+                  color: '#00A0E9',
+                  textAlign: 'left',
+                  top: 40,
+                  left: 20
+                },
+                // {
+                //   type: 'image',
+                //   url: user.avatarUrl,
+                //   top: 115,
+                //   left: 35,
+                //   width: 55,
+                //   height: 55
+                // },
+                {
+                  type: 'image',
+                  url: '/static/images/white.png',
+                  top: 115,
+                  left: 35,
+                  width: 55,
+                  height: 55
+                },
+                // {
+                //   type: 'text',
+                //   content: user.nickName,
+                //   fontSize: 18,
+                //   color: '#00A0E9',
+                //   textAlign: 'left',
+                //   top: 132,
+                //   left: 265,
+                //   bolder: true,
+                //   breakWord: true,
+                //   MaxLineNumber: 2
+                // },
+                {
+                  type: 'image',
+                  url: '/static/images/bg.png',
+                  top: 275,
+                  left: -209,
+                  width: 360,
+                  height: 270
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/sight_view.png',
+                  top: 180,
+                  left: 15,
+                  width: 360,
+                  height: 200
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/circle.png',
+                  top: 210,
+                  left: 33,
+                  width: 140,
+                  height: 140
+                },
+                {
+                  type: 'text',
+                  content: '左眼视力',
+                  fontSize: 12,
+                  color: '#9E9E9E',
+                  textAlign: 'left',
+                  top: 250,
+                  left: 80,
+                },
+                {
+                  type: 'text',
+                  content: this.leftEye,
+                  fontSize: 34,
+                  color: '#00A0E9',
+                  textAlign: 'left',
+                  top: 270,
+                  left: 80,
+                },
+                {
+                  type: 'text',
+                  content: this.leftEyeSub,
+                  fontSize: 12,
+                  color: '#424242',
+                  textAlign: 'left',
+                  top: 310,
+                  left: 95,
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/circle.png',
+                  top: 210,
+                  left: 213,
+                  width: 140,
+                  height: 140
+                },
+                {
+                  type: 'text',
+                  content: '右眼视力',
+                  fontSize: 12,
+                  color: '#9E9E9E',
+                  textAlign: 'left',
+                  top: 250,
+                  left: 260,
+                },
+                {
+                  type: 'text',
+                  content: this.rightEye,
+                  fontSize: 34,
+                  color: '#00A0E9',
+                  textAlign: 'left',
+                  top: 270,
+                  left: 260,
+                },
+                {
+                  type: 'text',
+                  content: this.rightEyeSub,
+                  fontSize: 12,
+                  color: '#424242',
+                  textAlign: 'left',
+                  top: 310,
+                  left: 277,
+                },
+                {
+                  type: 'image',
+                  url: '/static/images/qr_code1.jpeg',
+                  top: 460,
+                  left: 130,
+                  width: 120,
+                  height: 120
+                },
+                {
+                  type: 'text',
+                  content: '关 注 公 众 号，了 解 更 多 护 眼 方 法 大 全',
+                  fontSize: 12,
+                  color: '#9E9E9E',
+                  textAlign: 'left',
+                  top: 610,
+                  left: 75
+                }
+              ]
+            }
           }
         } else { // 已经存在地址，则自动保存
           this.save_photo();
@@ -343,11 +505,18 @@ export default {
         this.showTipsFlag = false;
       }
     },
+    // 分享给朋友
     onShareAppMessage(t) {
-      return "button" === t.from && {
-        title: "康贝贝测视力",
+      return {
+        title: "康贝贝博士测视力",
         path: "/pages/index/main"
       };
+    },
+    // 分享到朋友圈
+    onShareTimeline() {
+      return {
+	      title: '康贝贝博士测视力'
+	    }
     },
     onShow() {
       // 显示准备界面

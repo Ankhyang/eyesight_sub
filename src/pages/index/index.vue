@@ -44,6 +44,9 @@ export default {
     this.flag = true;
     // 启用按钮
     this.setSaveFlag(false);
+    // 清空缓存
+    this.setUserInfo({});
+    wx.setStorageSync('userInfo', {});
   },
   methods: {
     ...mapMutations(['setUserInfo', 'setConfig', 'setSaveFlag', 'setNextFlag']),
@@ -102,6 +105,13 @@ export default {
             })
           }
         })
+      } else if(!this.saveFlag && !detail.userInfo) { // 未授权， 进入身高页
+        // 启用按钮
+        this.setSaveFlag(false);
+        // 跳转到身高界面
+        wx.navigateTo({
+          url: "/pages/height/main"
+        })
       }
     },
     //  获取手机号码
@@ -135,6 +145,14 @@ export default {
             showCancel: false
           })
         })
+      } else if(!target.iv && !this.saveFlag) { // 未授权手机号
+        this.flag = true;
+        // 启用按钮
+        this.setSaveFlag(false);
+        // 跳转到身高界面
+        wx.navigateTo({
+          url: "/pages/height/main"
+        })
       }
     },
     save_user_info() {
@@ -167,6 +185,24 @@ export default {
           showCancel: false
         })
       })
+    }
+  },
+  onLoad() {
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
+  },
+  onShareAppMessage(t) {
+    return {
+      title: "康贝贝博士测视力",
+      path: "/pages/index/main"
+    };
+  },
+  // 分享到朋友圈
+  onShareTimeline() {
+    return {
+      title: '康贝贝博士测视力'
     }
   },
   created() {

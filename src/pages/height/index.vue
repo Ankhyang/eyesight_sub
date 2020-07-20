@@ -116,9 +116,23 @@ export default {
                 clearInterval(this.id)
             }
         }, 1000)
+        wx.showShareMenu({
+            withShareTicket: true,
+            menus: ['shareAppMessage', 'shareTimeline']
+        })
     },
-    mounted(){
-        
+    // 分享给朋友
+    onShareAppMessage(t) {
+      return {
+        title: "康贝贝博士测视力",
+        path: "/pages/index/main"
+      };
+    },
+    // 分享到朋友圈
+    onShareTimeline() {
+      return {
+	      title: '康贝贝博士测视力'
+	    }
     }
 }
 </script>

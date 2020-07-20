@@ -49,7 +49,6 @@
 <script>
 import prepare from '@/components/prepare'
 import util from '@/utils/utils.js'
-import config from '@/config/config.js'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
@@ -112,7 +111,7 @@ export default {
         }
     },
     methods:{
-        ...mapMutations(['setPreFlag']),
+        ...mapMutations(['setPreFlag', 'setUserInfo', 'setConfig']),
         // 点击小数或者五分按钮，设置类型
         setRuler(t) {
             var e, f, r = this, s = this.eRow;
@@ -178,8 +177,14 @@ export default {
                 this.rightScore = 0,
                 this.errorScore = 0,
                 this.totalScore = 0;
-                this.uploadVision();
+                // let flag = this.getAthority();
+                // 授权成功之后才能调转到下一页
+                // if(flag) {
+                if(this.config && this.userInfo.nickName !== undefined){
+                    this.uploadVision();
+                }
                 this.showResult(this.leftEye, r);
+                // }
             }
         },
         // 测试视力
@@ -257,17 +262,6 @@ export default {
                 this.setEyeSight(i, 1)
             }
         },
-        // 触摸视图区域之前
-        // handletouchtart(t) {
-        //     this.lastX = t.touches[0].pageX;
-        //     this.lastY = t.touches[0].pageY;
-        // },
-        // // 触摸视图区域之后
-        // handletouchend(t) {
-        //     var e, a = t.changedTouches[0].pageX, i = t.changedTouches[0].pageY, r = a - this.lastX, s = i - this.lastY;
-        //     Math.abs(r) > Math.abs(s) ? r < 0 ? e = this.directionData[3] : r > 0 && (e = this.directionData[1]) : s < 0 ? e = this.directionData[0] : s > 0 && (e = this.directionData[2]), 
-        //     this.lastX = a, this.lastY = i, this.checkTesting(e);
-        // },
         // 结束后跳转到结果页面
         showResult(t, e, a, i){
             wx.navigateTo({ 
@@ -308,6 +302,10 @@ export default {
             });
             // 隐藏界面
             this.setPreFlag(false);
+        },
+        // 获取授权
+        getAthority() {
+
         }
     },
     created() {

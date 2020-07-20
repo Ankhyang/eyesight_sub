@@ -15,7 +15,7 @@ const store = new Vuex.Store({
 		//设置用户信息
 		setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
-            wx.setStorageSync('userInfo', userInfo);
+			wx.setStorageSync('userInfo', userInfo);
 		},
 		// 保存设置信息
 		setConfig(state, config) {

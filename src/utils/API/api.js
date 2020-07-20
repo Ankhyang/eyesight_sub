@@ -38,10 +38,6 @@ export default {
     // 获取手机号码
     getPhoneNum: data => {
         return request('/api/v1/wx/getPhone', data, 'GET')
-    },
-    // 客服自动回复
-    reply_auto: data => {
-        return request('/api/v1/wx/sned', data, 'GET')
     }
 }
 

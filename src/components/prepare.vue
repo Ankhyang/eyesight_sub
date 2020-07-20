@@ -31,6 +31,19 @@ export default {
             this.$emit('toggleShow', this.to)
         }
     },
+    // 分享给朋友
+    onShareAppMessage(t) {
+      return {
+        title: "康贝贝博士测视力",
+        path: "/pages/index/main"
+      };
+    },
+    // 分享到朋友圈
+    onShareTimeline() {
+      return {
+	      title: '康贝贝博士测视力'
+	    }
+    },
     onLoad: function(options){
         if(this.to === 'left_test') {
             this.title = '左眼测量准备'
@@ -38,6 +51,10 @@ export default {
             this.title = '右眼测量准备'
         }
         wx.setNavigationBarTitle({title: this.title});
+        wx.showShareMenu({
+            withShareTicket: true,
+            menus: ['shareAppMessage', 'shareTimeline']
+        })
     }
 }
 </script>
